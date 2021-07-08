@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<context:component-scan base-package="com.sample.dao" />
+
+	<!--
+		Connection Pool객체를 스프링의 빈으로 등록하기
+	-->
+
+	<bean id="cp" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+
+		<property name="url" value="jdbc:oracle:thin:@testdb_high?TNS_ADMIN=C://Wallet_testdb" />
+		<property name="username" value="admin"/>
+		<property name="password" value="Gkehdrjs1234" />
+
+		<!--
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+		<property name="username" value="hr"/>
+		<property name="password" value="zxcv1234" />
+		-->
+	</bean>
+
+	<!--
+		데이터베이스 엑세스 기능이 구현되어 있는 JdbcTemplate객체를 스프링의 빈으로 등록하기.
+	-->
+	<bean id="template" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="cp" />
+	</bean>
+</beans>
