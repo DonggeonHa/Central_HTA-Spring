@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!--
+		<context:property-placeholder location="classpath:properties파일 경로"/>
+			db.properties 파일을 읽어서 설정정보를 불러온다.
+			스프링 빈 설정 파일이나 소스파일에서 설정정보를 ${} 표현식을 사용해서 읽어 올 수 있다.
+
+		 	<bean id="sample" class="Sample">
+		 		<property name="url" value="${db.url}">
+		 	</bean>
+
+		 	public class Sample {
+		 		@Value("${db.username}")
+		 		private String username;
+		 	}
+	 -->
+	<context:property-placeholder location="classpath:/db.properties"/>
+
+	<context:component-scan base-package="com.sample.di.demo7" />
+</beans>

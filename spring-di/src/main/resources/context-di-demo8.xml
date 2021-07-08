@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<bean id="sample" class="com.sample.di.demo8.Sample">
+		<!--
+			List<String> categories 멤버변수에 의존성 주입
+		-->
+		<property name="categories">
+			<list>
+				<value>가전</value>
+				<value>주방</value>
+				<value>가구</value>
+				<value>잡화</value>
+			</list>
+		</property>
+
+		<!--
+			List<Sns> snsList 멤버변수에 의존성 주입
+			* instagram으로 참조되는 객체와 facebook으로 참조되는 객체를 포함하고 있는
+			  List객체를 snsList 멤버변수에 주입한다.
+		-->
+		<property name="snsList">
+			<list>
+				<ref bean="instagram" />
+				<ref bean="facebook" />
+			</list>
+		</property>
+
+		<!--
+			Map<String, Sns> snsMap 멤버변수에 의존성 주입
+		-->
+		<property name="snsMap">
+			<map>
+				<entry>
+					<key><value>insta</value></key>
+					<ref bean="instagram"/>
+				</entry>
+				<entry>
+					<key><value>facebook</value></key>
+					<ref bean="facebook" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="instagram" class="com.sample.di.demo8.Instagram" />
+	<bean id="facebook" class="com.sample.di.demo8.FaceBook" />
+</beans>
