@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!--
+		MessageSender 인터페이스를 구현한 SmsMessageSender를 스프링 컨테이너의 빈으로 등록하기
+		MessageSender 인터페이스를 구현한 KakaoMessageSender를 스프링 컨테이너의 빈으로 등록하기
+		MessageSender 인터페이스를 구현한 emailMessageSender를 스프링 컨테이너의 빈으로 등록하기
+	-->
+	<bean id="sms" class="com.sample.di.demo3.SmsMessageSender" />
+	<bean id="kakao" class="com.sample.di.demo3.KakaoMessageSender" />
+	<bean id="email" class="com.sample.di.demo3.EmailMessageSender" >
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="25" />
+		<property name="username" value="hong" />
+		<property name="password" value="zxcv1234" />
+	</bean>
+
+	<!--
+		이벤트 공지기능이 구현된 EventService를 스프링 컨테이너의 빈으로 등록하기
+		EventService는 MessageSender 인터페이스를 구현한 객체를 의존성주입으로 제공받아야 한다.
+	-->
+	<bean id="eventService" class="com.sample.di.demo3.EventService">
+		<!--
+			<property /> 태그는 의존성 주입을 설정하는 태그다.
+				name 속성은 의존하는 객체를 저장하는 멤버변수 이름이다.
+				ref 속성은 스프링 컨테이너가 생성한 빈의 식별자 아이디다.
+				* ref 속성에 지정된 빈(객체)을 name속성에 지정된 멤버변수에 주입한다.
+		-->
+		<property name="messageSender" ref="sms" />
+	</bean>
+	<!--
+		시스템 장애를 관리자에게 보내는 SystemAlertService를 스프링의 빈으로 등록했고
+		MessageSender 구현객체 중 KakaoMessageSender를 SystemAlertSErvice의 멤버변수에 주입하기
+	-->
+	<bean id="systemAlertService" class="com.sample.di.demo3.SystemAlertService">
+		<property name="messageSender" ref="email" />
+	</bean>
+</beans>

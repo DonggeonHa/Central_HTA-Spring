@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!--
+		Setter Injection
+			- setter 메소드를 이용한 의존성 주입
+				* <property /> 태그를 이용한다.
+	-->
+	<bean id="service1" class="com.sample.di.demo4.CloudDatabaseService">
+		<property name="url" value="free.rds.amazon.com" />
+		<property name="username" value="admin" />
+		<property name="password" value="zxcv1234" />
+		<property name="timeout" value="5000" />
+	</bean>
+
+	<!--
+		Constructor Injection
+			- 생성자 메소드를 이용한 의존성 주입
+				* <constructor-arg /> 태그를 이용한다.
+				* <constructor-arg /> 태그의 갯수가 생성자의 매개변수 갯수다.
+				* <constructor-arg /> 태그를 2개 작성했다면 반드시 해당 클래스에
+				  매개변수 2개짜리 생성자 메소드가 정의되어 있어야 한다.
+	-->
+	<bean id="service2" class="com.sample.di.demo4.CloudDatabaseService">
+		<!--
+			username과 password를 전달받은 매개변수 2개짜리 생성자를 이용해서 의존성을 주입함.
+		-->
+		<constructor-arg name="username" value="hong" />
+		<constructor-arg name="password" value="zxcv1234" />
+	</bean>
+
+	<!--
+		Constructor Injection
+	-->
+	<bean id="service3" class="com.sample.di.demo4.CloudDatabaseService">
+		<constructor-arg name="url" value="free.mysql.cafe24.com" />
+		<constructor-arg name="username" value="kim" />
+		<constructor-arg name="password" value="zxcv1234" />
+	</bean>
+
+	<!--
+		Constructor Injection과 Setter Injection을 혼용해서 의존성 주입하기
+	-->
+	<bean id="service4" class="com.sample.di.demo4.CloudDatabaseService">
+		<property name="url" value="mongodb.free.mongdb.com" />
+		<constructor-arg name="username" value="kang" />
+		<constructor-arg name="password" value="12345678" />
+		<property name="timeout" value="10000" />
+	</bean>
+
+	<!--
+		<context:property-placeholder />
+			지정된 경로의 properties 파일을 로드한다.
+			로딩된 설정정보는 ${}표현식을 사용해서 의존성 주입에 적용할 수 있다.
+	-->
+	<context:property-placeholder location="classpath:/cloud-config.properties" />
+
+	<bean id="service5" class="com.sample.di.demo4.CloudDatabaseService">
+		<property name="url" value="${cloud.database.url}" />
+		<property name="username" value="${cloud.database.username}" />
+		<property name="password" value="${cloud.database.password}" />
+		<property name="timeout" value="${cloud.database.timeout}" />
+
+	</bean>
+</beans>

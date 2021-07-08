@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!--
+		1. BookDao, CustomerDao, OrderDao 객체를 스프링이 생성하고 관리하게 한다.
+	-->
+	<bean id="bookDao" class="com.sample.di.demo1.BookDao" />
+	<bean id="customerDao" class="com.sample.di.demo1.CustomerDao" />
+	<bean id="orderDao" class="com.sample.di.demo1.OrderDao" />
+
+	<!--
+		1.  OrderService객체를 스프링이 생성하고 관리하게 한다.
+		2.  OrderService객체가 필요로하는 BookDao, CustomerDao, OrderDao 객체를
+			OrderService객체에 의존성 주입한다.
+	-->
+	<bean id="orderService" class="com.sample.di.demo2.OrderService">
+		<property name="bookDao" ref="bookDao" />
+		<property name="customerDao" ref="customerDao" />
+		<property name="orderDao" ref="orderDao" />
+	</bean>
+
+	<bean id="customerService" class="com.sample.di.demo2.CustomerService">
+		<property name="customerDao" ref="customerDao" />
+		<property name="orderDao" ref="orderDao" />
+	</bean>
+</beans>

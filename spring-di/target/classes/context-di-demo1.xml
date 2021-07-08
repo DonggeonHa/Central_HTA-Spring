@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 
+		BookDao, CustomerDao, OrderDao를 스프링 컨테이너가 객체 생성해서
+		각각, bookDao, customerDao, orderDao라는 이름으로 관리하도록 하기
+	 -->
+	 <bean id="bookDao" class="com.sample.di.demo1.BookDao" ></bean>
+	 <bean id="customerDao" class="com.sample.di.demo1.CustomerDao" ></bean>
+	 <bean id="orderDao" class="com.sample.di.demo1.OrderDao" ></bean>
+</beans>
