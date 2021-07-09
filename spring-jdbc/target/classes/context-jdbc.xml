@@ -7,17 +7,17 @@
 
 	<context:component-scan base-package="com.sample.dao" />
 
+	<context:property-placeholder location="classpath:/db.properties" />
+
 	<!--
 		Connection Pool객체를 스프링의 빈으로 등록하기
 	-->
 
 	<bean id="cp" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
-
-		<property name="url" value="jdbc:oracle:thin:@testdb_high?TNS_ADMIN=C://Wallet_testdb" />
-		<property name="username" value="admin"/>
-		<property name="password" value="Gkehdrjs1234" />
-
+		<property name="driverClassName" 	value="${db.driverClassName}" />
+		<property name="url" 				value="${db.url}" />
+		<property name="username" 			value="${db.username}"/>
+		<property name="password" 			value="${db.password}" />
 		<!--
 		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
 		<property name="username" value="hr"/>
