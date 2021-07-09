@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.sample.mapper.ProductMapper">
+
+    <insert id="insertProduct" parameterType="com.sample.vo.Product">
+        INSERT INTO sample_products
+        (product_no, product_name, product_maker, product_category, product_price, product, discount_price)
+        VALUES
+        (product_seq.nextval, #{name}, {maker}, {category}, {price}, {discountPrice})
+    </insert>
+
+    <update id="updateProduct" parameterType="com.sample.vo.Product">
+        UPDATE sample_products
+        SET
+            product_name = #{name},
+            product_maker = #{maker},
+            product_category = #{category},
+            product_price = #{price},
+            product_discount_price = #{discountPrice},
+            product_stock = #{stock},
+            product_sold_out = #{soldOut},
+            product_review_cnt = #{reviewCnt}
+        WHERE
+            product_no = #{no}
+    </update>
+
+    <select id="getAllProducts" resultType="com.sample.vo.Product">
+        SELECT
+            product_no              as no,
+            product_name            as name,
+            product_maker           as maker,
+            product_category        as category,
+            product_price           as price,
+            product_discount_price  as discountPrice,
+            product_stock           as stock,
+            product_sold_out        as soldOut,
+            product_review_cnt      as reviewCnt,
+            product_created_date    as createdDate
+        FROM
+            sample_products
+        ORDER BY product_no DESC
+    </select>
+
+    <select id="getProductByNo" parameterType="int" resultType="com.sample.vo.Product">
+        SELECT
+            product_no              as no,
+            product_name            as name,
+            product_maker           as maker,
+            product_category        as category,
+            product_price           as price,
+            product_discount_price  as discountPrice,
+            product_stock           as stock,
+            product_sold_out        as soldOut,
+            product_review_cnt      as reviewCnt,
+            product_created_date    as createdDate
+        FROM
+            sample_products
+        WHERE
+            product_no = #{value}
+    </select>
+</mapper>
