@@ -108,6 +108,13 @@
 		    <scope>provided</scope>
 		</dependency>
 		
+		<!-- 인코딩/디코딩 라이브러리 의존성 정의 -->
+		<dependency>
+		    <groupId>commons-codec</groupId>
+		    <artifactId>commons-codec</artifactId>
+		    <version>1.15</version>
+		</dependency>
+		
 	
 		<!-- 표준프레임워크 실행환경 -->
         <dependency>

@@ -4,7 +4,7 @@
 <mapper namespace="com.sample.mapper.UserMapper">
 
     <insert id="insertUser" parameterType="com.sample.vo.User">
-        INSERT INTO sample_userㄴ
+        INSERT INTO sample_users
             (user_id, user_name, user_password, user_email, user_phone)
         VALUES
             (#{id}, #{name}, #{password}, #{email}, #{phone})
@@ -14,9 +14,9 @@
         UPDATE
             sample_users
         SET
-            user_password = #{maker},
-            user_email = #{category},
-            user_phone = #{price},
+            user_password = #{password},
+            user_email = #{email},
+            user_phone = #{phone},
             user_status = #{status},
             user_point = #{point}
         WHERE

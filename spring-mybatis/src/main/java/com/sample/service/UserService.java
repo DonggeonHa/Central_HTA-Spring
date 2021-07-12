@@ -3,6 +3,7 @@ package com.sample.service;
 import com.sample.exception.MallBusinessException;
 import com.sample.mapper.UserMapper;
 import com.sample.vo.User;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class UserService {
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
-    
+
     public void addNewUser(User user) {
     	User savedUser = userMapper.getUserById(user.getId());
     	if (savedUser != null) {
@@ -40,10 +41,16 @@ public class UserService {
     	    throw new MallBusinessException("[" + user.getPhone() + "] 는 이미 등록된 전화번호입니다.");
         }
 
+    	// 비밀번호 암호화
+        String encodedPassword = DigestUtils.sha256Hex(user.getPassword());
+    	user.setPassword(encodedPassword);
+
     	// 신규 사용자 정보 저장
         userMapper.insertUser(user);
 
+
     	// 신규 가입한 사용자에게 기본 적립포인트 지급
+        user = userMapper.getUserById(user.getId());
         user.setPoint(defaultDepositPoint);
         userMapper.updateUser(user);
     }

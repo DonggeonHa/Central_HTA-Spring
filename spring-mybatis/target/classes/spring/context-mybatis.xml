@@ -12,8 +12,7 @@
 	<!--
 		데이터베이스 연결정보가 포함된 Properties 파일 로딩하기
 	-->
-	<context:property-placeholder location="classpath:/spring/db.properties"/>
-	<context:property-placeholder location="classpath:/spring/mall.properties"/>
+	<context:property-placeholder location="classpath:/spring/*.properties"/>
 
 	<!--
 		Apache commons-dbcp의 BasicDataSource를 커넥션풀 객체를 스프링 컨테이너에 등록하기
