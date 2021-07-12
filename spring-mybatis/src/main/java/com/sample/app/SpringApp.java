@@ -16,6 +16,7 @@ public class SpringApp {
         ProductService service = context.getBean(ProductService.class);
 
         List<Product> products = service.getAllProductList();
+
         for (Product product : products) {
             System.out.println(product.getName() + ", " + product.getMaker());
         }

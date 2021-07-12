@@ -13,6 +13,7 @@
 		데이터베이스 연결정보가 포함된 Properties 파일 로딩하기
 	-->
 	<context:property-placeholder location="classpath:/spring/db.properties"/>
+	<context:property-placeholder location="classpath:/spring/mall.properties"/>
 
 	<!--
 		Apache commons-dbcp의 BasicDataSource를 커넥션풀 객체를 스프링 컨테이너에 등록하기
@@ -30,6 +31,12 @@
 			* 매핑된 SQL 구문정보를 가지는 객체다.
 			* SqlSession을 제공하는 객체다.
 
+			* p:dataSource-ref : mybatis가 db access 작업을 수행할 때 필요한 커넥션을 제공하는
+								 커넥션 풀의 빈 아이디를 저장한다.
+			* p:configLocation : mybatis 환경설정파일의 경로를 지정한다.
+			* p:mapperLocations : SQL구문이 정의된 파일의 경로를 지정한다.
+								  와일드카드(*)를 사용해서 매퍼파일의 경로를 한 번에 지정할 수 있다.
+
 	-->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
 		  p:dataSource-ref="dataSource"
@@ -38,10 +45,17 @@
 
 	<!--
 		2. MapperScannerConfigure를 스프링의 빈으로 등록하기
-			* Mapper 인터페이스에 대한 구현객체(Mapper 인스턴스)를 생성한다.
-			* 생성된 Mapper 인스턴스를 스프링 컨테이너의 빈으로 등록한다.
-
+			* 매퍼 인터페이스를 구현한 매퍼 인스턴스(매퍼 인터페이스 구현 객체)를 생성하고 스프링의 빈으로 등록한다.
 			* 스프링 컨테이너에 등록된 Mapper 인스턴스는 의존성 주입을 통해 필요한 곳에 제공할 수 있다.
+
+			* base-package 속성은 매퍼 인터페이스가 정의된 패키지를 지정한다.
+			* base-package에 정의된 패키지에서 모든 매퍼 인터페이스를 스캔한다
+				* 스캔된 모든 매퍼 인터페이스에 대한 구현객체(Mapper 인스턴스)를 생성한다.
+					* 매퍼 인터페이스와 매핑된 매퍼 xml 파일에서 각각의 db access작업에 필요한 SQL 가져온다.
+				* 생성된 Mapper 인스턴스를 스프링 컨테이너의 빈으로 등록한다.
+
+			* factory-ref 속성은 SqlSession객체를 제공하는 mybatis 핵심객체(SqlSessionFactory)의
+			  빈 아이디를 지정한다.
 	-->
 	<mybatis-spring:scan base-package="com.sample.mapper"
 						 factory-ref="sqlSessionFactory" />
@@ -49,6 +63,18 @@
 	<!--
 		업무로직이 구현되어 있는 com.sample.service 패키지의 모든 클래스를 스캔해서 스프링의 빈으로 자동
 		등록하고, 의존성 주입도 처리하기
+
+			* 모든 업무로직 구현 클래스는 @Service 어노테이션을 클래스에 추가한다.
+			* 모든 업무로직 구현 클래스는 업무로직 구현에 필요한 db access 작업을 실행하기 위해서
+			  매퍼 인터페이스의 구현객체를 주입받아야 한다.
+			  작성예)
+			  	@Service
+			  	public class ProductService {
+			  		@Autowired
+			  		private ProductMapper productMapper;
+
+			  		// 구현코드 생략...
+			  	}
 	-->
 	<context:component-scan base-package="com.sample.service" />
 
