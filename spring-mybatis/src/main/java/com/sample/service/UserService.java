@@ -55,4 +55,8 @@ public class UserService {
         userMapper.updateUser(user);
     }
 
+    public void getUserInfo(String userId) {
+
+    }
+
 }

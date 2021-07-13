@@ -11,6 +11,7 @@
 
 	<!--
 		데이터베이스 연결정보가 포함된 Properties 파일 로딩하기
+		쇼핑몰 관련 설정정보가 포함된 Properties 파일 로딩하기
 	-->
 	<context:property-placeholder location="classpath:/spring/*.properties"/>
 

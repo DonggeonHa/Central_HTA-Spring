@@ -1,5 +1,6 @@
 package com.sample.service;
 
+import com.sample.exception.MallBusinessException;
 import com.sample.mapper.ProductMapper;
 import com.sample.vo.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,18 @@ public class ProductService {
         product.setStock(product.getStock() + amount);
 
         productMapper.updateProduct(product);
+    }
+
+    /**
+     *  상품번호를 전달받아서 해당 상품정보를 반환한다
+     * @param productNo 상품정보, 상품이 존재하지 않는 경우
+     */
+    public Product getProductDetail(int productNo) {
+        Product product = productMapper.getProductByNo(productNo);
+        if (product == null) {
+            throw new MallBusinessException("상품번호가 올바르지 않습니다.");
+        }
+
+        return product;
     }
 }
