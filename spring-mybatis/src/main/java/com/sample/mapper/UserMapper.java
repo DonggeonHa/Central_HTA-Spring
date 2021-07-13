@@ -19,6 +19,12 @@ public interface UserMapper {
     void updateUser(User user);
 
     /**
+     * 사용자 아이디를 전달받아서 해당 사용자의 정보를 삭제한다.
+     * @param id 사용자 아이디
+     */
+    void deleteUser(String id);
+
+    /**
      * 사용자 아이디를 전달받아서 해당 사용자 정보를 조회해서 반환한다.
      * @param id 사용자 아이디
      * @return 사용자 정보, 일치하는 아이디가 없으면 null이 반환된다.

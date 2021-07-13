@@ -55,8 +55,22 @@ public class UserService {
         userMapper.updateUser(user);
     }
 
-    public void getUserInfo(String userId) {
+    /**
+     * 아이디를 전달받아서 조회된 사용자 정보를 반환한다.
+     * @param userId 아이디
+     * @return 사용자정보
+     */
+    public User getUserDetail(String userId) {
+        return userMapper.getUserById(userId);
+    }
 
+
+    /**
+     * 아이디를 전달받아서 사용자 정보를 삭제한다
+     * @param userId 아이디
+     */
+    public void removerUser(String userId){
+        userMapper.deleteUser(userId);
     }
 
 }

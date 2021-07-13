@@ -23,7 +23,14 @@
             user_id = #{id}
     </update>
 
-    <select id="getUserById" parameterType="String" resultType="com.sample.vo.User">
+    <delete id="deleteUser" parameterType="string">
+        DELETE FROM
+            sample_users
+        WHERE
+            user_id = #{value}
+    </delete>
+
+    <select id="getUserById" parameterType="string" resultType="com.sample.vo.User">
         SELECT
             user_id              as id,
             user_name            as name,
@@ -39,7 +46,7 @@
             user_id = #{value}
     </select>
 
-    <select id="getUserByEmail" parameterType="String" resultType="com.sample.vo.User">
+    <select id="getUserByEmail" parameterType="string" resultType="com.sample.vo.User">
         SELECT
             user_id              as id,
             user_name            as name,
@@ -55,7 +62,7 @@
             user_email = #{value}
     </select>
 
-    <select id="getUserByPhone" parameterType="String" resultType="com.sample.vo.User">
+    <select id="getUserByPhone" parameterType="string" resultType="com.sample.vo.User">
         SELECT
             user_id              as id,
             user_name            as name,
