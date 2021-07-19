@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd">
+
+	<!-- 
+		src/main/resources/spring 폴더에 위치한 모든 properties 파일을 
+		읽어오는 객체를 스프링 컨테이너에 등록하기
+	 -->
+	<context:property-placeholder location="classpath:/spring/*.properties"/>
+	
+	<!-- 
+		커넥션 풀을 지원하는 DataSource 구현객체를 스프링 컨테이너에 등록하기
+	 -->
+	<bean id="dataSource" 
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		p:driverClassName="${db.driverClassName}"
+		p:url="${db.url}"
+		p:username="${db.username}"
+		p:password="${db.password}"></bean>
+		
+	<!-- 
+		mybatis의 SqlSessionFactory 객체를 스프링 컨테이너에 등록하기
+			* SqlSessionFactory객체는 SqlSessionFactoryBean을 이용해서 스프링 컨테이너에 등록된다. 
+	 -->
+	<bean id="sqlSessionFactory" 
+		class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="dataSource"
+		p:configLocation="classpath:/mybatis/mybatis-config.xml"
+		p:mapperLocations="classpath:/mybatis/mappers/*.xml"></bean>
+		
+	<!-- 
+		com.sample.mapper 패키지의 모든 Mapper 인터페이스를 스캔해서 
+		Proxy 객체를 생성한 후 스프링 컨테이너에 등록하기
+	 -->
+	<mybatis-spring:scan base-package="com.sample.mapper"
+		factory-ref="sqlSessionFactory"/>
+		
+	<!-- 
+		com.sample.service 패키지의 모든 클래스를 스캔해서 객체 생성 후 스프링의 빈으로 등록하기
+	 -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.sample.service" />
+	
+	<!-- 
+		어노테이션 기반의 Spring AOP 설정하기
+	 -->
+	<!-- 
+		<aop:aspectj-autoproxy /> 
+			* Spring AOP관련 어노테이션을 감지해서 Aspect객체와 Target를 엮은 Proxy객체를 생성하고 
+			  스프링 컨테이너에 등록한다.,
+	 -->
+	<aop:aspectj-autoproxy />
+	<!-- 
+		com.sample.advice패키지에 정의된 클래스를 스프링의 빈으로 등록하기
+	 -->
+	<context:component-scan base-package="com.sample.advice" />
+
+</beans>
+
+
+
+
+
+
+
+
+
+
