@@ -7,52 +7,67 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd  http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.2.xsd ">
 
-	<!--
+	<!-- 
 		spring mvc관련 어노테이션을 분석하고, 적절한 처리를 담당하는 클래스들을 스프링 컨테이너의 빈으로 등록시킨다.
 		따라서, 어노테이션을 사용해서 spring mvc를 활용한 웹 애플리케이션을 개발할 수 있게 한다.
 		spring mvc 관련 어노테이션
-			@Controller, @restController, @controllerAdvice
-			@requestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping
+			@Controller, @RestController, @ControllerAdvice
+			@RequestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping
 			@RequestParam, @PathVariable, @ModelAttribute, @Valid
 			@RequestBody, @ResponseBody
 			@SessionAttributes
 			@ExceptionHandler, @InitBind
-	-->
+	 -->
 	<mvc:annotation-driven />
-
-	<!--
+	
+	<!-- 
+		정적자원 매핑(이미지, CSS, javascript 소스 등)
+		클라이언트의 요청이 /resources/*
+	 -->
+	<mvc:resources mapping="/resources/**" location="/resources/"></mvc:resources>
+	
+	<!-- 
 		com.sample.web.controller 패키지의 클래스들을 자동으로 스프링 컨테이너의 빈으로 등록시킨다.
 		주로 @Controller, @RestController 어노테이션이 지정되어 있는 컨트롤러 클래스가 스프링의 빈으로 자동 등록된다.
-	-->
+	 -->
 	<context:component-scan base-package="com.sample.web.controller" />
 
-	<!--
-		JSP 기반의 웹 애플리케이션인 경우 ViewResolever 설정하기
+	<!-- 
+		JSP 기반의 웹 애플리케이션인 경우 ViewResolver 설정하기
 			* InternalResourceViewResolver를 기본 뷰리졸브로 등록한다.
-				* InternalResourceViewResolver는 InternalResourceView, JstlView, RedirectView 중 하나를 반환한다.
-				* 컨트롤로 요청핸들러 메소드에서 jsp 파일의 전체 경로를 짧게 작성하기 위해서 몇가지 설정을 추가한다.
-				* prefix와 suffix는 각각 요청핸들러 메소드가 반홯나는 뷰이름의 앞과 뒤에 추가될 문자열이다.
-			* 작성예
+				* InternalResourceViewResolver는 InternalResourceView, JstlView, RedirectView 중
+				  하나를 반환한다.
+				* 컨트롤러의 요청핸들러 메소드에서 jsp 파일의 전체 경로를 짧게 작성하게 위해서 몇가지 설정을 추가한다. 
+				* prefix와 suffix는 각각 요청핸들러 메소드가 반환하는 뷰이름의 앞과 뒤에 추가될 문자열이다.
+			작성예
 				@RequestMapping("/")
 				public String home() {
 					return "home";
 				}
-				- 요청핸들러 메소드가 ModelAndView를 반환하지 않음
-				- 요청핸들러 메소드가 뷰이름만 반환함.
-				- HandlerAdapter는 뷰 이름이 포함된 ModelAndView객체를 생성해서 DispatcherServlet에게 반환함
-				- DispatcherServlet은 ModelAndView객체에 View객체가 들어있지 않으므로,
-					InternalResourceViewResolver에게 뷰이름을 전달하고, 적절한 뷰 객체를 요청함
-				- InternalResourceViewResolver는 뷰이름을 분석해서
+				* 요청핸들러 메소드가 ModelAndView를 반환하지 않음
+				* 요청핸들러 메소드가 뷰이름만 반환함.
+				* HandlerAdapter는 뷰이름이 포함된 ModelAndView객체를 생성해서 DispatcherServlet에게 반환함
+				* DispatcherServlet은 ModelAndView객체에 View객체가 들어있지 않으므로, 
+				  InternalResourceViewResolver에게 뷰이름 전달하고, 적절한 뷰 객체를 요청함.
+				* InternalResourceViewResolver는 뷰이름을 분석해서
 					"redirect:"로 시작하면 RedirectView객체에 뷰이름을 담고, RedirectView를 반환함.
-					"redirect:"로 시작하지 않으면 JstlView객체에 /WEB-INF/views/home.jsp를 담고, JstlView를 반환함
-				- DispatcherServlet 은 전달받은 뷰 객체(RedirectView  혹은 JstlView)의 render()를 실행함
+					"redirect:"로 시작하지않으면 JstlView객체에 /WEB-INF/views/home.jsp를 담고,
+					                        JstlView를 반환함
+				* DispatcherServlet은 전달받은 뷰객체(RedirectView 혹은 JstlView)의 render()를 실행함
 					RedirectView인 경우 클라이언트에게 재요청 URL이 응답으로 전달됨
-					JstlView인 경우
-
-	-->
+					JstlView인 경우 지정된 JSP페이지로 내부이동해서 JSP를 실행함 -> HTML 컨텐츠가 응답으로 전달됨
+						
+	 -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
 </beans>
+
+
+
+
+
+
+

@@ -1,8 +1,17 @@
 package com.sample.web.controller;
 
+import com.sample.service.UserService;
+import com.sample.vo.User;
+import com.sample.web.form.UserRegisterForm;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /*
 	@Controller
@@ -12,6 +21,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
+	private static Logger logger = LogManager.getLogger(HomeController.class);
+
+	@Autowired
+	private UserService userService;
 	/*
 		@RequestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping
 			- 요청 URL과 요청핸들러 메소드를 매핑시킨다.
@@ -38,10 +51,9 @@ public class HomeController {
 			- 요청핸들러 메소드에서 Model객체에 값 혹은 객체를 저장하면 HttpServletRequest객체의 속성으로 옮겨진다.(JSP 기반의 웹 애플리케이션에 한함)
 	 */
 	@GetMapping(path = {"/", "/home"})
-	public String home(Model model) {
-		
+	public String home() {
+		logger.info("홈페이지 요청을 처리함");
 		// 뷰 페이지에 값 전달하기
-		model.addAttribute("greeting", "안녕하세요, 반갑습니다.");
 		
 		return "home"; // /WEB-INF/views/home.jsp 경로에서 "/WEB-INF/views/"와 ".jsp"를 제외한 이름
 	}
@@ -84,4 +96,50 @@ public class HomeController {
 						public Board getDetail() { ... }
 					}
 	 */
+
+	/**
+	 * 회원가입화면으로 내부이동하는 요청핸들러 메소드
+	 * @return
+	 */
+	@GetMapping("/register")
+	public String registerform() {
+		logger.debug("registerform() 실행 됨");
+
+		logger.info("회원가입폼 요청을 처리함");
+		logger.debug("registerform() 종료 됨");
+		return "form";
+	}
+
+	/*
+	@PostMapping("/register")
+	public String register(@RequestParam("id") String userId,
+						   @RequestParam("password") String userPassword,
+						   @RequestParam("passwordConfirm") String userPasswordConfirm,
+						   @RequestParam("name") String userName,
+						   @RequestParam("email") String userEmail,
+						   @RequestParam("phone") String userPhone) {
+		logger.debug("registerform() 실행 됨");
+		logger.info("회원정보를 등록함");
+
+		logger.debug("registerform() 종료 됨");
+		return "redirect:home";
+	}
+	*/
+
+	@PostMapping("/register")
+	public String register(UserRegisterForm userRegisterForm) {
+		logger.debug("registerform() 실행 됨");
+		logger.info("회원가입정보" + userRegisterForm);
+
+		// User객체를 생성하고, UserRegisterForm의 값을 User객체로 복사한다
+		User user = new User();
+		BeanUtils.copyProperties(userRegisterForm, user);
+
+		// UserService의 registerUser(user)를 호출해서 업무로직을 수행한다
+		userService.registerUser(user);
+
+		logger.info("회원정보 등록 요청을 처리함");
+		logger.debug("registerform() 종료 됨");
+		return "redirect:home";
+	}
 }

@@ -20,6 +20,11 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    /**
+     * 모든 상품정보를 요청을 처리하는 요청핸들러 메소드 정의
+     * @param model 뷰 페이지에 전달할 데이터를 담는 객체, HandlerAdapter객체가 Model을 생성해서 전달함
+     * @return 뷰페이지의 이름
+     */
     @GetMapping("/list")
     public String products(Model model) {
         // 판매중인 전체 상품정보 조회하기
@@ -28,6 +33,7 @@ public class ProductController {
         // 뷰 페이지에 상품정보 목록 전달하기
         model.addAttribute("products", productList);
 
+        // 뷰 페이지로 내부이동하기
         // WEB-INF/views/product/list.jsp로 내부이동해서 JSP 실행시키기
         return "product/list";
     }

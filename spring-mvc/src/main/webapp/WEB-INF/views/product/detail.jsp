@@ -14,7 +14,7 @@
 	<main>
 		<div class="row mb-3">
 			<div class="col">
-				<div class="border p-2 bg-dark text-white fw-bold">전체 상품 리스트</div>
+				<div class="border p-2 bg-dark text-white fw-bold">상품 상세정보</div>
 			</div>
 		</div>
 		<div class="row mb-3">
@@ -22,36 +22,51 @@
 				<div class="border p-2 bg-light">
 					<table class="table">
 						<colgroup>
-							<col width="7%">
 							<col width="15%">
-							<col width="*">
+							<col width="35%">
 							<col width="15%">
-							<col width="15%">
+							<col width="35%">
 						</colgroup>
-						<thead>
+						<tbody>
 							<tr>
 								<th>번호</th>
-								<th>카테고리</th>
-								<th>상품명</th>
-								<th class="text-end">가격</th>
-								<th class="text-end">할인가격</th>
+								<td>100</td>
+								<th>등록일자</th>
+								<td>2021년 7월 14일</td>
 							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="product" items="${products }">
-								<tr>
-									<td>${product.no }</td>
-									<td>${product.category }</td>
-									<td><a class="text-decoration-none" href="detail?no=${product.no }">${product.name }</a></td>
-									<td class="text-end"><fmt:formatNumber value="${product.price }" /> 원</td>
-									<td class="text-end"><span class="text-danger"><fmt:formatNumber value="${product.discountPrice }" /></span> 원</td>
-								</tr>
-							</c:forEach>
+							<tr>
+								<th>상품명</th>
+								<td>에이든 아쿠아텍스 패브릭 3인용 소파</td>
+								<th>리뷰갯수</th>
+								<td>1,000 개</td>
+							</tr>
+							<tr>
+								<th>카테고리</th>
+								<td>가구</td>
+								<th>제조사</th>
+								<td>중앙 가구침대 주식회사</td>
+							</tr>
+							<tr>
+								<th>가격</th>
+								<td>1,000,000 원</td>
+								<th>할인가격</th>
+								<td><strong class="text-danger">890,000</strong> 원</td>
+							</tr>
+							<tr>
+								<th>재고량</th>
+								<td>100 개</td>
+								<th>판매여부</th>
+								<td><strong class="text-success">판매중</strong></td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
+			<div class="col">
+			
+			</div>
 		</div>
+		
 	</main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
