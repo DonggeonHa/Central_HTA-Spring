@@ -9,4 +9,11 @@ public interface UserService {
      * @param user 사용자정보
      */
     void registerUser(User user);
+
+    /**
+     * 지정된 아이디와 비밀번호로 사용자를 인증한다.
+     * @param id 사용자 아이디
+     * @param password 사용자 비밀번호
+     */
+    void login(String id, String password);
 }

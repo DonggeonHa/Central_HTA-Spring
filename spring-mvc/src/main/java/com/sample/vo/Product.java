@@ -21,5 +21,4 @@ public class Product {
     private Date createdDate;
 
     public Product() {}
-
 }

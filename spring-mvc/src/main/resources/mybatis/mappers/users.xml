@@ -41,7 +41,7 @@
     <insert id="insertUser" parameterType="com.sample.vo.User">
         INSERT INTO sample_users
         (user_id, user_password, user_name, user_email, user_phone)
-        VALUE
+        VALUES
         (#{id}, #{password}, #{name}, #{email}, #{phone})
     </insert>
 </mapper>

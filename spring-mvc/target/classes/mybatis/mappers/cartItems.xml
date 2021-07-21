@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--
+-->
+<mapper namespace="com.sample.dao.CartItemDao">
+	
+	<insert id="insertCartItem" parameterType="com.sample.vo.CartItem">
+        INSERT INTO
+            sample_cart_items(item_no, user_id, product_no)
+        VALUES
+            (cart_seq.nextval, #{userId}, #{productNo})
+    </insert>
+
+    <update id="updateCartItem" parameterType="com.sample.vo.CartItem">
+        UPDATE
+            sample_cart_items
+        SET
+            item_amount = #{amount}
+        WHERE
+            item_no = #{no}
+    </update>
+
+    <select id="getCartItem" resultType="com.sample.vo.CartItem">
+        SELECT
+            item_no             no,
+            user_id             userId,
+            product_no          productNo,
+            item_amount         amount,
+            item_created_date   createdDate
+        FROM
+            sample_cart_items
+        WHERE
+            user_id = #{userId}
+        AND
+            product_no = #{productNo}
+    </select>
+</mapper>

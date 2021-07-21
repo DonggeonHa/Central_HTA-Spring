@@ -3,15 +3,17 @@ package com.sample.web.controller;
 import com.sample.service.UserService;
 import com.sample.vo.User;
 import com.sample.web.form.UserRegisterForm;
+import com.sample.web.utils.SessionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpSession;
 
 /*
 	@Controller
@@ -142,4 +144,33 @@ public class HomeController {
 		logger.debug("registerform() 종료 됨");
 		return "redirect:home";
 	}
+
+	@GetMapping("/login")
+	public String login() {
+		logger.debug("loginform() 실행 됨");
+
+		logger.info("로그인폼 요청을 처리함");
+		logger.debug("loginform() 종료 됨");
+		return "loginform";
+	}
+
+	@PostMapping("/login")
+	public String login(@RequestParam("id") String userId, @RequestParam("password") String userPassword) {
+		logger.debug("login() 실행됨");
+		logger.info("로그인하는 사용자의 아이디 : " + userId);
+		logger.info("로그인하는 사용자의 비밀번호: " + userPassword);
+
+
+		userService.login(userId, userPassword);
+		logger.debug("login() 종료됨");
+
+		return "redirect:home";
+	}
+
+	@GetMapping("/logout")
+	public String logout() {
+		SessionUtils.destroySession();
+		return "redirect:home";
+	}
+
 }
