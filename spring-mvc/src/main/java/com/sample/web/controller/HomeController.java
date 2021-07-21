@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpSession;
-
 /*
 	@Controller
 		- 클라이언트의 요청을 처리하는 컨트롤러 클래스임을 나타낸다.
