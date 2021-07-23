@@ -1,5 +1,6 @@
 package com.sample.web.controller;
 
+import com.sample.exception.SampleException;
 import com.sample.service.UserService;
 import com.sample.vo.User;
 import com.sample.web.form.UserRegisterForm;
@@ -9,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,11 +23,24 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class HomeController {
-
+	// HomeController 클래스에 대한 로그를 출력하는 객체를 획득함.
 	private static Logger logger = LogManager.getLogger(HomeController.class);
 
 	@Autowired
 	private UserService userService;
+
+	@ExceptionHandler(SampleException.class)
+	public String handleSampleException(SampleException ex, Model model) {
+		model.addAttribute("error", ex);
+
+		if ("ERR_USER_001".equals(ex.getCode())) {
+			return "form";
+		} else if("ERR_USER_002".equals(ex.getCode())) {
+			return "loginform";
+		}
+		return "error/server";
+	}
+
 	/*
 		@RequestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping
 			- 요청 URL과 요청핸들러 메소드를 매핑시킨다.
@@ -129,7 +145,7 @@ public class HomeController {
 	@PostMapping("/register")
 	public String register(UserRegisterForm userRegisterForm) {
 		logger.debug("registerform() 실행 됨");
-		logger.info("회원가입정보" + userRegisterForm);
+		logger.info("회원가입정보 " + userRegisterForm);
 
 		// User객체를 생성하고, UserRegisterForm의 값을 User객체로 복사한다
 		User user = new User();
@@ -140,6 +156,7 @@ public class HomeController {
 
 		logger.info("회원정보 등록 요청을 처리함");
 		logger.debug("registerform() 종료 됨");
+
 		return "redirect:home";
 	}
 
@@ -161,6 +178,14 @@ public class HomeController {
 
 		userService.login(userId, userPassword);
 		logger.debug("login() 종료됨");
+
+		// 로그인 전 페이지로 되돌아가기
+		String returnPath = (String) SessionUtils.getAttribute("returnPath");
+		SessionUtils.removeAttribute("returnPath");
+
+		if (returnPath != null) {
+			return "redirect:" + returnPath;
+		}
 
 		return "redirect:home";
 	}

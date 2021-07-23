@@ -1,16 +1,14 @@
 package com.sample.vo;
 
-import java.util.Date;
+import java.sql.Date;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
 @Getter
 @Setter
 @ToString
 public class Product {
-
 	private int no;
 	private String name;
 	private String maker;
@@ -21,4 +19,5 @@ public class Product {
 	private String soldOut;
 	private int reviewCnt;
 	private Date createdDate;
+	
 }

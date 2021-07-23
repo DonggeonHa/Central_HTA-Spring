@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 상품정보관련 업무로직 메소드를 전부 구현하고 있는 구현 클래스다. <br />
@@ -37,7 +38,6 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public void addCartItem(CartItem cartItem) {
-        //
         CartItem savedCartItem = cartItemDao.getCartItem(cartItem.getUserId(), cartItem.getProductNo());
         if (savedCartItem == null) {
             cartItemDao.insertCartItem(cartItem);
@@ -45,5 +45,10 @@ public class ProductServiceImpl implements ProductService{
             savedCartItem.setAmount(savedCartItem.getAmount() + 1);
             cartItemDao.updateCartItem(savedCartItem);
         }
+    }
+
+    @Override
+    public List<Map<String, Object>> getMyCartItems(String userId) {
+        return cartItemDao.getCartItemsByUserId(userId);
     }
 }

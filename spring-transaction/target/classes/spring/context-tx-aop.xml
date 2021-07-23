@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- 의존성 주입을 위한 어노테이션(@Component, @Controller, @Service, @Repository, @RestController, 
+		@ControllerAdvice, @Configuration, @Autowired, @Resource, @Value 등)을 감지하고, 
+		의존성 주입을 수행한 AnnotationProcessor들을 스프링의 빈으로 등록시킨다 -->
+	<context:annotation-config />
+	<!-- @Component, @Controller, @RestController, @ControllerAdvice, @Service, 
+		@Repository 어노테이션이 정의된 클래스들을 지정된 패키지 및 그 하위 패키지에서 스캔해서 스프링의 빈으로 등록한다. -->
+
+	<context:component-scan
+		base-package="com.sample.advice"></context:component-scan>
+	<context:component-scan
+		base-package="com.sample.service"></context:component-scan>
+
+	<!-- 환경설정정보가 정의된 properties파일정보를 읽어서 의존성 주입에 활용할 수 있게 하는 PropertySourcePlaceHolder를 
+		스파링 빈으로 등록한다. -->
+	<context:property-placeholder
+		location="classpath:/spring/*.properties" />
+
+	<!-- Apache commons-dbcp에서 제공하는 커넥션 풀을 스프링 빈으로 등록 -->
+
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource"
+		p:driverClassName="${db.driverClassName}" p:url="${db.url}"
+		p:username="${db.username}" p:password="${db.password}" />
+
+	<!-- CRUD기능과 Mapper 인터페이스를 Mapper 인스턴스로 만드는 기능이 있는 SqlSession객체를 제공하는 SqlSessionFactory를 
+		스프링의 빈으로 등록 -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="dataSource"
+		p:configLocation="classpath:/mybatis/mybatis-config.xml"
+		p:mapperLocations="classpath:/mybatis/mappers/*.xml" />
+
+	<!-- 지정된 패키지에서 매퍼 인터페이스를 스캔해서 매퍼 인터페이스에 대한 매퍼 인스턴스 생성하고, 스프링의 빈을 등록시키는 MapperScannerConfigurer를 
+		스프링의 빈으로 등록한다. -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+		p:basePackage="com.sample.mapper"
+		p:sqlSessionFactoryBeanName="sqlSessionFactory"></bean>
+
+	<!-- 선언적 트랜잭션 처리를 지원하는 TransactionManager를 스프링 빈으로 등록하기 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="dataSource"></bean>
+
+	<!-- 
+		Spring AOP 설정을 사용해서 선언적 트랜잭션 처리
+			- 트랜잭션 매니저를 Advice로 만들기
+			- <aop:config /> 태그를 사용해서 서비스 클래스에 공통기능으로 적용시키기	
+	 -->
+	<!-- 
+		TransactionManager를 Advice로 만들기
+			* 트랜잭션처리 규칙을 지정하기
+				- <tx:attributes /> 태그를 사용하면 트랜잭션 적용규칙을 지정할 수 있다.
+					
+					read-only = "true" 트랜잭션을 읽기전용 모드로 동작하게 한다.
+						<tx:method ready-only="true" name="get*" />
+						메소드이름이 get으로 시작하는 모든 메소드에 트랜잭션이 적용될 때는 읽기 전용모드의
+						트랜잭션이 적용되게 함(해당 메소드 내에서 INSERT, UPDATE, DELETE 쿼리를 실행하면 오류가 발생함)
+					propagation = "REQUIRED" -> 기존 트랜잭션이 있는 경우 기존 트랜잭션 내에서 실행, 없는 경우 새로운 트랜잭션을 생성
+						트랜잭션 전파규칙을 설정한다.
+						<tx:method propagation="REQUIRED" name ="*"/>
+						모든 메소드에 대해서 트랜잭션 전파규칙을 REQUIRED로 지정한다.
+						  * 전파규칙
+						  rollback-for = "예외클래스명" : 롤백처리할 예외클래스를 지정한다.
+						  noRollback-for = "예외클래스명" : 롤백처리하지 않을 예외 클래스를 지정한다.
+						  timeout="초단위 시간" : timeout에 지정된 시간을 초과한 경우 rollback처리한다. 
+						  
+									
+	 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+			<tx:attributes>
+				<tx:method propagation = "REQUIRED" name="*"/>
+				<tx:method read-only="true" name="get*"/>
+				<tx:method rollback-for ="Exception" name="*"/>
+			</tx:attributes>
+	</tx:advice>
+	<!-- 
+		<aop:config /> 설정을 사용해서 위에서 생성한 Advice를 서비스에 공통기능으로 적용시키기
+	 -->
+	 <aop:config>
+		 <!-- 트랜잭션이 공통기능으로 적용될 곳을 포인트 컷으로 지정한다. -->
+		 <aop:pointcut expression="execution(* com.sample.service.*Service.*(..))"
+		  	id="txPointcut"/>
+		  	
+		 <!-- 
+		 	advisor를 정의한다
+		 		* advisor은 aspect로 동일한 개념이다.
+		 		* advisor은 Spring AOP에만 있는 용어다.
+		 		* aspect = advice + pointcut이고, advisor = advice + pointcut이다.
+		 		* 트랜잭션 처리를 지원하는 공통기능을 설정할 때 <aop:aspect /> 태그를 사용하는 대신
+		 			<aop:advisor />태그를 사용한다.
+		 		* 트랜잭션 처리를 지원하는 공통기능은 언제나 대상메소드에 대해서 around advice로 동작하기 때문에
+		 		  <aop:before/> <aop:around/>와 같은 하위 태그를 사용하지 않아도 되는
+		 		  <aop:advisor/> 태그를 사용한다. 
+		  --> 	
+		 <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+	 </aop:config>
+</beans>

@@ -1,82 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-
-<mapper namespace="com.sample.mapper.UserMapper">
-
-	<insert id="insertUser" parameterType="com.sample.vo.User">
-		insert into sample_users
-		(user_id, user_name, user_password, user_email, user_phone)
-		values
-		(#{id}, #{name}, #{password}, #{email}, #{phone})
-	</insert>
 	
-	<delete id="deleteUser" parameterType="string">
-		delete from
-			sample_users
-		where
-			user_id = #{value}
-	</delete>
-	
-	<update id="updateUser" parameterType="com.sample.vo.User">
-		update
-			sample_users
-		set
-			user_password = #{password},
-			user_email = #{email},
-			user_phone = #{phone},
-			user_status = #{status},
-			user_point = #{point}
-		where
-			user_id = #{id}
-	</update>
-	
-	<select id="getUserById" parameterType="string" resultType="com.sample.vo.User">
-		select
-			user_id				as id,
-			user_name 			as name,
-			user_password 		as password,
-			user_email 			as email,
-			user_phone 			as phone,
-			user_status 		as status,
-			user_point 			as point,
-			user_created_date 	as createdDate
-		from
-			sample_users
-		where
-			user_id = #{value}
-	</select>
-	
-	<select id="getUserByEmail" parameterType="string" resultType="com.sample.vo.User">
-		select
-			user_id				as id,
-			user_name 			as name,
-			user_password 		as password,
-			user_email 			as email,
-			user_phone 			as phone,
-			user_status 		as status,
-			user_point 			as point,
-			user_created_date 	as createdDate
-		from
-			sample_users
-		where
-			user_email = #{value}
-	</select>
-	
-	<select id="getUsersByPhone" parameterType="string" resultType="com.sample.vo.User">
-		select
-			user_id				as id,
-			user_name 			as name,
-			user_password 		as password,
-			user_email 			as email,
-			user_phone 			as phone,
-			user_status 		as status,
-			user_point 			as point,
-			user_created_date 	as createdDate
-		from
-			sample_users
-		where
-			user_phone = #{value}
-	</select>
-	
-</mapper>
+	<mapper namespace="com.sample.mapper.UserMapper">
+		<insert id="insertUser" parameterType="com.sample.vo.User">
+			INSERT into sample_users
+				(user_id, user_name, user_password, user_email, user_phone)
+			VALUES
+				(#{id},#{name},#{password},#{email},#{phone})
+		</insert>
+		
+		<delete id = "deleteUser" parameterType="string">
+			DELETE 
+				from sample_users
+			WHERE
+				user_id = #{value}
+		</delete>
+		
+		<update id="updateUser" parameterType="com.sample.vo.User">
+			UPDATE 
+				sample_users
+			SET
+				user_password		= #{password},
+				user_email			= #{email}, 
+				user_phone			= #{phone},
+				user_status			= #{status}, 
+				user_point			= #{point}
+			WHERE
+				user_id=#{id}
+		</update>
+		
+		<select id="getUserById" parameterType = "string" resultType = "com.sample.vo.User">
+			SELECT 
+				user_id				as	id 
+				,user_name			as	name
+				,user_password		as	password
+				,user_email			as	email
+				,user_phone			as	phone
+				,user_status		as	status
+				,user_created_date	as 	createdDate
+				,user_point			as	point
+			FROM 
+				sample_users
+			WHERE
+				user_id=#{value}
+		</select>
+		<select id="getUserByEmail" parameterType = "string" resultType = "com.sample.vo.User">
+			SELECT 
+				user_id				as	id 
+				,user_name			as	name
+				,user_password		as	password
+				,user_email			as	email
+				,user_phone			as	phone
+				,user_status		as	status
+				,user_created_date	as 	createdDate
+				,user_point			as	point
+			FROM 
+				sample_users
+			WHERE
+				user_email=#{value}
+		</select>
+		<select id="getUserByPhone" parameterType = "string" resultType = "com.sample.vo.User">
+			SELECT 
+				user_id				as	id 
+				,user_name			as	name
+				,user_password		as	password
+				,user_email			as	email
+				,user_phone			as	phone
+				,user_status		as	status
+				,user_created_date	as 	createdDate
+				,user_point			as	point
+			FROM 
+				sample_users
+			WHERE
+				user_phone = #{value}
+		</select>
+		
+	</mapper>

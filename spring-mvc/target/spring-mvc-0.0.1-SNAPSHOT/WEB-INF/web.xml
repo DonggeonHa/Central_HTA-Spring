@@ -84,4 +84,22 @@
 			<include-prelude>/WEB-INF/views/common/tags.jsp</include-prelude>
 		</jsp-property-group>
 	</jsp-config>
+
+	<!--
+		에러페이지 설정하기
+
+		<error-page>
+			<exception-type>패키지를 포함한 예외클래스명</exception-type>
+			<location>/WEB-INF/views/error/xxx.jsp</location>
+		</error-page>
+
+		<error-page>
+			<error-code>에러코드</error-code>
+			<location>/WEB-INF/views/error/xxx.jsp</location>
+		</error-page>
+	-->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/error/filenotfound.jsp</location>
+	</error-page>
 </web-app>

@@ -20,6 +20,15 @@
 						<div class="border p-2 bg-dark text-white fw-bold">회원가입</div>
 					</div>
 				</div>
+				<c:if test="${not empty error}">
+					<div class="row">
+						<div class="col">
+							<div class="alert alert-danger" role="alert">
+								<strong>${error.title}</strong> ${error.message}
+							</div>
+						</div>
+					</div>
+				</c:if>
 				<div class="row mb-3">
 					<div class="col">
 						<div class="border p-2 bg-light">

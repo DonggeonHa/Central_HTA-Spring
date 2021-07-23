@@ -4,6 +4,7 @@ import com.sample.vo.CartItem;
 import com.sample.vo.Product;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 상품과 관련된 업무로직 메소드가 정의된 인터페이스다. <br />
@@ -29,4 +30,11 @@ public interface ProductService {
      * @param cartItem 장바구니 아이템 정보
      */
     void addCartItem(CartItem cartItem);
+
+    /**
+     * 지정된 사용자의 장바구니 아이템정보를 제공하는 서비스
+     * @param userId 사용자 아이디
+     * @return 장바구니 아이템
+     */
+    List<Map<String, Object>> getMyCartItems(String userId);
 }

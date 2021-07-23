@@ -35,4 +35,23 @@
         AND
             product_no = #{productNo}
     </select>
+
+    <select id="getCartItemsByUserId" parameterType="string" resultType="hashmap">
+        SELECT
+            A.item_no as itemNo,
+            A.item_amount as amount,
+            B.product_no as productNo,
+            B.product_name as name,
+            B.product_price as price,
+            B.product_discount_price as discountPrice,
+            A.item_amount * B.product_discount_price as orderPrice
+        FROM
+            sample_cart_items A, sample_products B
+        WHERE
+            A.product_no = B.product_no
+        AND
+            A.user_id = #{value}
+        ORDER BY
+            B.product_name ASC
+    </select>
 </mapper>

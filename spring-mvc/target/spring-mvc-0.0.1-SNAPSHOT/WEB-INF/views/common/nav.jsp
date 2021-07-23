@@ -19,7 +19,7 @@
 						마이 메뉴
 					</a>
 					<ul class="dropdown-menu" aria-labelledby="my-menu-link">
-						<li><a class="dropdown-item" href="/spring-mvc/cart/list">장바구니</a></li>
+						<li><a class="dropdown-item" href="/spring-mvc/product/cart">장바구니</a></li>
 						<li><a class="dropdown-item" href="/spring-mvc/order/list">구매내역</a></li>
 						<li><a class="dropdown-item" href="/spring-mvc/my/reviews">내가 작성한 리뷰</a></li>
 						<li><a class="dropdown-item" href="/spring-mvc/my/pointhistory">포인트변경 이력</a></li>

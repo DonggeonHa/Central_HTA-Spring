@@ -4,38 +4,34 @@
 
 <!-- 
 	namespace
-		* 이름 충돌을 방지한다.
-		* 매퍼 인터페이스의 전체 이름을 지정한다.
+		* 이름 충돌을 방지한다
+		* 매퍼 인터페이스의 전체 이름을 지정한다
 		* 매퍼 파일과 연관된 매퍼 인터페이스를 mybatis 엔진에 알린다.
-		* 스프링 컨테이너에서 MapperScannerConfigurer이 매퍼 인터페이스를 스캔해서 
-		  매퍼 인스턴스를 생성할 때 각각의 데이터베이스 엑세스 작업에서 사용할 SQL 구문을 정의한다.
+		* 스프링 컨테이너에서 MapperScannerConfigurer이 매퍼 인터페이스를 스캔해서
+		  매퍼 인스턴스를 생성할 때 각각의 데이터베이스 엑세스 작업에서 사용할 SQL 구문을 정의한다. 
  -->
 <mapper namespace="com.sample.mapper.ProductMapper">
-	
-	<insert id="insertProduct" parameterType="com.sample.vo.Product">
+	<insert id="insertProduct" parameterType = "com.sample.vo.Product">
 		insert into sample_products
-			(product_no, product_name, product_maker, product_category, product_price, product_discount_price)
+		(product_no, product_name, product_maker, product_category, product_price, product_discountPrice)
 		values
-			(product_seq.nextval, #{name}, #{maker}, #{category}, #{price}, #{discountPrice})
+		(product_seq.nextval, #{name}, #{maker}, #{category}, #{price}, #{discountPrice)
 	</insert>
-	
 	<update id="updateProduct" parameterType="com.sample.vo.Product">
-      update sample_products
-      set
-         product_name = #{name},
-         product_maker = #{maker},
-         product_category = #{category},
-         product_price = #{price},
-         product_discount_price = #{discountPrice},
-         product_stock = #{stock},
-         product_sold_out = #{soldOut},
-         product_review_cnt = #{reviewCnt}
-      where
-         product_no = #{no}         
-   </update>
-   
-   
-   <select id="getAllProducts" resultType="com.sample.vo.Product">
+		update sample_products
+		set
+		 	 product_name	     	=#{name}
+			,product_maker			=#{maker}
+			,product_category		=#{category}
+			,product_price           =#{price}
+			,product_discount_price  =#{discountPrice}
+			,product_stock           =#{stock}
+			,product_sold_out        =#{soldOut}
+			,product_review_cnt      =#{reviewCnt}
+		where
+			product_no =#{no}
+	</update>
+	<select id="getAllProducts" resultType="com.sample.vo.Product">
       select
          product_no no,
          product_name name,
@@ -68,5 +64,6 @@
          sample_products
       where
          product_no = #{value}
-   </select>
+   </select>	
+	
 </mapper>

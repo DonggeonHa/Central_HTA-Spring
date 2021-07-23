@@ -19,6 +19,24 @@
 						<div class="border p-2 bg-dark text-white fw-bold">로그인</div>
 					</div>
 				</div>
+				<c:if test="${param.error eq 'deny'}">
+					<div class="row">
+						<div class="col">
+							<div class="alert alert-danger" role="alert">
+								요청한 서비스는 로그인 후 사용가능합니다.
+							</div>
+						</div>
+					</div>
+				</c:if>
+				<c:if test="${not empty error}">
+					<div class="row">
+						<div class="col">
+							<div class="alert alert-danger" role="alert">
+								<strong>${error.title}</strong> ${error.message}
+							</div>
+						</div>
+					</div>
+				</c:if>
 				<div class="row mb-3">
 					<div class="col">
 						<div class="border p-2 bg-light">
