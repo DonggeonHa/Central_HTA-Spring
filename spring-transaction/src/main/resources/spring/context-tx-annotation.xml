@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<context:annotation-config />
+	<context:component-scan
+		base-package="com.sample.advice,com.sample.service" />
+
+	<context:property-placeholder
+		location="classpath:/spring/*.properties" />
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource"
+		p:driverClassName="${db.driverClassName}" p:url="${db.url}"
+		p:username="${db.username}" p:password="${db.password}">
+	</bean>
+	
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="dataSource"
+		p:configLocation="classpath:/mybatis/mybatis-config.xml"
+		p:mapperLocations="classpath:/mybatis/mappers/*.xml"></bean>
+		
+	<mybatis-spring:scan base-package="com.sample.mapper" 
+			factory-ref="sqlSessionFactory"/>
+			
+	<!-- 
+		선언적 트랜잭션 처리
+	 -->
+	 
+	 <!-- 
+	 TransactionManager를 스프링의 빈으로 등록하기 
+	 	* spring-jdbc, ibatis, mybatis 기술로 db access를 하는 경우 DataSourceTransactionManager 등록
+	 -->	
+	 <bean id="transactionManager"
+	 	class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+	 	p:dataSource-ref="dataSource"></bean><!-- DSTM -->
+	 	
+	 <!-- 
+	 	Annotation 기반 선언적 트랜잭션 처리하기
+	 		* <tx:annotation-driven /> 태그 추가 
+	 		* @Transactional 어노테이션을 감지해서 해당 클래스의 모든 메소드가 실행될 때마다 트랜잭션매니저의
+	 		      트랜잭션 서비스가 제공되도록 한다.
+	  -->	
+	 	<tx:annotation-driven transaction-manager="transactionManager"/><!-- 위 객체 아이디와 같아야함 -->
+	 	
+	 
+</beans>

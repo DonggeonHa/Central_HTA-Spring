@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd">
+
+	<!-- 
+		빈 오토와이어링을 지원하는 객체를 스프링 컨테이너에 등록함
+	 -->
+	<context:annotation-config/>
+	<!-- 
+		com.sample.service 패키지의 클래스드를 스캔해서 스프링의 빈으로 등록함
+	 -->
+	<context:component-scan base-package="com.sample.service" />
+	
+	<!-- 
+		properties 파일을 읽어오는 PropertySourcePlaceHolder를 스프링의 빈으로 등록함
+	 -->
+	<context:property-placeholder location="classpath:/spring/*.properties"/>
+	
+	<!-- 
+		commons-dbcp에서 제공해주는 커넥션 풀 객체를 스프링의 빈으로 등록함
+	 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource"
+		p:driverClassName="${db.driverClassName}"
+		p:url="${db.url}"
+		p:username="${db.username}"
+		p:password="${db.password}"></bean>
+		
+	<!-- 
+		mybatis 핵심객체를 스프링의 빈으로 등록함
+	 -->
+	<bean id="sqlSesionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="dataSource"
+		p:configLocation="classpath:/mybatis/mybatis-config.xml"
+		p:mapperLocations="classpath:/mybatis/mappers/*.xml"></bean>
+
+	<!-- 
+		com.sample.mapper 패키지에서 매퍼 interface를 스캔해서 각각의 인터페이스마다.
+		Proxy 빈을 생성해서 스프링의 빈으로 등록함
+	 -->
+	<mybatis-spring:scan base-package="com.sample.mapper"
+		factory-ref="sqlSesionFactory"/>
+		
+	<!-- 
+		XML을 이용한 AOP 설정하기
+			- Advice 클래스를 스프링의 빈으로 등록하기
+			- <aop:config />태그를 사용해서 AOP 설정하기
+	 -->
+	<!-- 
+		공통 관심사항 구현된 클래스를 스프링의 빈으로 등록
+	 -->
+	<bean id="myAdvice" class="com.sample.advice.XmlSchemaUsingAdvice"></bean> 
+	
+	<!-- 
+		<aop:config /> AOP 설정을 지원하는 태그다.
+		<aop:pointcut /> 포인트 컷을 지정하는 태그다.
+		<aop:aspect /> AOP 적용을 위한 aspect를 설정하는 태그다.
+			* ref 속성은 적용할 공통기능이 구현된 스프링의 빈을 지정한다.
+			* <aop:aspect />의 하위태그들은 언제, 무엇을, 어디에 AOP를 적용할 것인지를 결정한다.
+	 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* com.sample.service.*Service.*(..))" 
+			id="servicePointcut"/>
+		
+		<aop:aspect ref="myAdvice">
+			<aop:before method="beforeTargetMethod" 
+				pointcut-ref="servicePointcut"/>
+			
+			<aop:after-returning method="afterReturingTargetMethod" 
+				pointcut-ref="servicePointcut" 
+				returning="returnValue"/>
+			
+			<aop:after-throwing method="afterThrowingTargetMethod"
+				pointcut-ref="servicePointcut"
+				throwing="exception"/>
+			
+			<aop:after method="afterTargetMethod" 
+				pointcut-ref="servicePointcut"/>
+				
+			<aop:around method="aroundTargetMethod" 
+				pointcut-ref="servicePointcut"/>
+		</aop:aspect>
+	</aop:config>
+
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
