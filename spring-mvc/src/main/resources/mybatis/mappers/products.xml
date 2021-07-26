@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<!--
--->
+
+<!-- 
+	com.sample.dao.ProductDao 매퍼인터페이스에 대한 매퍼파일(SQL이 정의된 파일) 정의
+ -->
 <mapper namespace="com.sample.dao.ProductDao">
 	
 	<select id="getAllProducts" resultType="com.sample.vo.Product">
@@ -21,22 +23,38 @@
          sample_products
       order by product_no desc
 	</select>
-
-    <select id="getProductByNo" parameterType="int" resultType="com.sample.vo.Product">
-        SELECT
-             product_no no,
-             product_name name,
-             product_maker maker,
-             product_category category,
-             product_price price,
-             product_discount_price discountPrice,
-             product_stock stock,
-             product_sold_out soldOut,
-             product_review_cnt reviewCnt,
-             product_created_date createdDate
-        FROM
-            sample_products
-        WHERE
-            product_no = #{value}
-    </select>
+   
+	<select id="getProductByNo" parameterType="int" resultType="com.sample.vo.Product">
+      select
+         product_no 				no,
+         product_name 				name,
+         product_maker 				maker,
+         product_category 			category,
+         product_price 				price,
+         product_discount_price 	discountPrice,
+         product_stock 				stock,
+         product_sold_out 			soldOut,
+         product_review_cnt 		reviewCnt,
+         product_created_date 		createdDate
+      from
+         sample_products
+      where
+      	product_no = #{value}
+	</select>
+	
+	<update id="updateProduct" parameterType="com.sample.vo.Product">
+		update
+			sample_products
+		set
+			product_name = #{name},
+			product_maker = #{maker},
+			product_category = #{category},
+			product_price = #{price},
+			product_discount_price = #{discountPrice},
+			product_stock = #{stock},
+			product_sold_out = #{soldOut},
+			product_review_cnt = #{reviewCnt}
+		where
+			product_no = #{no}
+	</update>
 </mapper>

@@ -9,6 +9,7 @@
 <title>샘플 애플리케이션</title>
 </head>
 <body>
+<c:set var="menu" value="login" />
 <%@ include file="common/nav.jsp" %>
 <div class="container my-3">
 	<main>
@@ -19,7 +20,7 @@
 						<div class="border p-2 bg-dark text-white fw-bold">로그인</div>
 					</div>
 				</div>
-				<c:if test="${param.error eq 'deny'}">
+				<c:if test="${param.error eq 'deny' }">
 					<div class="row">
 						<div class="col">
 							<div class="alert alert-danger" role="alert">
@@ -28,11 +29,11 @@
 						</div>
 					</div>
 				</c:if>
-				<c:if test="${not empty error}">
+				<c:if test="${not empty error }">
 					<div class="row">
 						<div class="col">
-							<div class="alert alert-danger" role="alert">
-								<strong>${error.title}</strong> ${error.message}
+							<div class="alert alert-danger">
+								<strong>${error.title }</strong> ${error.message }
 							</div>
 						</div>
 					</div>
@@ -130,29 +131,25 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-	$(function() {
-		// 입력값 유효성 체크해서 아이디와 비밀번호가 전부 값이 입력되어 있을 때만 폼 입력값이 서버로 제출되게 하기
-		$("#form-login").submit(function () {
-			var id = $.trim($('#user-id').val());
-			if (!id) {
-				alert("아이디를 입력해주세요")
-				$('#user-id').focus();
-				return false;
-			}
-
-			var password = $.trim($('#user-password').val());
-			if (!password) {
-				alert("비밀번호를 입력해주세요")
-				$('#user-password').focus();
-				return false;
-			}
-
-			return true; // 폼 입력값이 서버로 제출되게 함
-		})
-
-
-
-	})
+$(function() {
+	// 입력값 유효성 체크해서 아이디와 비밀번호가 전부 값이 입력되어 있을 때만 폼 입력값이 서버로 제출되게 하기
+	$("#form-login").submit(function() {
+		var id = $.trim($("#user-id").val());
+		if (!id) {
+			alert("아이디는 필수입력값입니다.");
+			$("#user-id").focus();
+			return false;
+		}
+		var password = $.trim($("#user-password").val());
+		if (!password) {
+			alert("비밀번호는 필수입력값입니다.");
+			$("#user-password").focus();
+			return false;
+		}
+		
+		return true;
+	});
+})
 </script>
 </body>
 </html>

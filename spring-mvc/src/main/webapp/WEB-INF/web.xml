@@ -6,14 +6,12 @@
 	
 	<!-- 
 		루트 스프링 컨테이너 설정하기
-
-		* ContextLoaderListener은 Tomcat이 시작되면 <context-param /> 에 설정된 스프링 빈 설정파일을 읽어서
+		
+		* ContextLoaderListener은 Tomcat이 시작되면 <context-param />에 설정된 스프링 빈 설정파일을 읽어서
 		  스프링 컨테이너를 생성한다.
 		* ContextLoaderListener가 생성한 스프링 컨테이너는 루트 스프링 컨테이너가 된다.
 		* ContextLoaderListener가 생성한 스프링 컨테이너가 관리하는 빈들은 Child 스프링 컨테이너에서 참조할 수 있다.
-		  (즉, Root 스프링 컨테이너가 관리하는 빈들은 Child 스프링 컨테이너가 관리하는 빈들에게 의존성 주입이 가능하다.
-
-
+		  (즉, Root 스프링 컨테이너가 관리하는 빈들은 Child 스프링 컨테이너가 관리하는 빈들에게 의존성 주입이 가능하다.) 
 	 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -76,7 +74,7 @@
 	</servlet-mapping>
 	
 	<!-- 
-		모든 JSP에서 공통으로 사용되는 태그라이브러리설정을 모든 JSP 페이지의 맨 앞부분에 include하기
+		모든 JSP에서 공통으로 사용되는 태그라이브러리 설정을 모든 JSP 페이지의 맨 앞부분에 include하기
 	 -->
 	<jsp-config>
 		<jsp-property-group>
@@ -84,26 +82,26 @@
 			<include-prelude>/WEB-INF/views/common/tags.jsp</include-prelude>
 		</jsp-property-group>
 	</jsp-config>
-
-	<!--
+	
+	<!-- 
 		에러페이지 설정하기
-
+		
 		<error-page>
 			<exception-type>패키지를 포함한 예외클래스명</exception-type>
 			<location>/WEB-INF/views/error/xxx.jsp</location>
 		</error-page>
-
 		<error-page>
 			<error-code>에러코드</error-code>
 			<location>/WEB-INF/views/error/xxx.jsp</location>
 		</error-page>
-	-->
+	 -->
 	<error-page>
 		<error-code>404</error-code>
 		<location>/WEB-INF/views/error/filenotfound.jsp</location>
-	</error-page>
+	</error-page> 
 	<error-page>
-    	<error-code>500</error-code>
-    	<location>/WEB-INF/views/error/server.jsp</location>
-   </error-page> 
+		<error-code>500</error-code>
+		<location>/WEB-INF/views/error/server.jsp</location>
+	</error-page> 
+	
 </web-app>

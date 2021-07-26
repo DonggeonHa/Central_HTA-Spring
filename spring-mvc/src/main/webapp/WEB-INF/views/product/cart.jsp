@@ -1,5 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <!doctype html>
@@ -48,26 +46,26 @@
 							</thead>
 							<tbody>
 								<c:choose>
-									<c:when test="${empty items}">
+									<c:when test="${empty items }">
 										<tr class="align-middle">
 											<td colspan="7" class="text-center">장바구니에 저장된 상품이 없습니다.</td>
 										</tr>
 									</c:when>
 									<c:otherwise>
-										<c:forEach var="item" items="${items}">
+										<c:forEach var="item" items="${items }">
 											<tr class="align-middle">
 												<td><input type="checkbox" name="cartNo" value="100"></td>
-												<td>${item.NAME}</td>
-												<td class="text-end"><fmt:formatNumber value="${item.PRICE}" /> 원</td>
-												<td class="text-end"><span class="text-danger"><fmt:formatNumber value="${item.DISCOUNTPRICE}" /></span> 원</td>
+												<td><button class="btn btn-link btn-sm" data-bs-toggle="modal" data-bs-target="#model-product-detail">${item.NAME }</button></td>
+												<td class="text-end"><fmt:formatNumber value="${item.PRICE }"/> 원</td>
+												<td class="text-end"><span class="text-danger"><fmt:formatNumber value="${item.DISCOUNTPRICE }"/></span> 원</td>
 												<td class="d-flex justify-content-center">
 													<div class="input-group w-75">
-														<button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon1"><i class='fas fa-minus'></i></button>
-														<input type="text" class="form-control form-control-sm" value="${item.AMOUNT}" >
-														<button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon2"><i class='fas fa-plus'></i></button>
+				  										<button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon1"><i class='fas fa-minus'></i></button>
+				  										<input type="text" class="form-control form-control-sm" value="${item.AMOUNT }" >
+				  										<button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon1"><i class='fas fa-plus'></i></button>
 													</div>
 												</td>
-												<td class="text-end"><span class="fw-bold"><fmt:formatNumber value="${item.ORDERPRICE}" /></span> 원</td>
+												<td class="text-end"><span class="fw-bold"><fmt:formatNumber value="${item.ORDERPRICE }"/></span> 원</td>
 												<td class="text-center">
 													<a href="" class="btn btn-secondary btn-sm">삭제</a>
 													<a href="" class="btn btn-primary btn-sm">주문</a>
@@ -98,12 +96,32 @@
 				</div>			
 			</div>
 		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="model-product-detail" tabindex="-1" aria-hidden="true">
+	  		<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">상품 상세 정보</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-
+$(function() {
+	$(".btn-link").click(function(event) {
+		event.preventDefault();
+	});
+})
 </script>
 </body>
 </html>

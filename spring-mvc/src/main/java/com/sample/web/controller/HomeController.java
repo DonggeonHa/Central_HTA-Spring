@@ -1,7 +1,5 @@
 package com.sample.web.controller;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,11 +23,8 @@ import com.sample.web.utils.SessionUtils;
  */
 @Controller
 public class HomeController {
-	// HomeController 클래스에 대한 로그를 출력하는 객체를 획득함.
-	private static Logger logger = LogManager.getLogger(HomeController.class);
-	
-	@Autowired
-	private UserService userService;
+
+	@Autowired UserService userService;
 	
 	@ExceptionHandler(UserRegisterException.class)
 	public String handleUserRegisterException(UserRegisterException ex, Model model) {
@@ -71,7 +66,6 @@ public class HomeController {
 	 */
 	@GetMapping(path = {"/", "/home"})
 	public String home() {
-		logger.info("홈페이지 요청을 처리함");
 		return "home";	// /WEB-INF/views/home.jsp 경로에서 "/WEB-INF/views/"와 ".jsp"를 제외한 이름
 	}
 	/*
@@ -124,10 +118,6 @@ public class HomeController {
 	// 회원가입화면으로 내부이동하는 요청핸들러 메소드
 	@GetMapping("/register")
 	public String registerform() {
-		logger.debug("registerform() 실행됨");
-		logger.info("회원가입폼 요청을 처리함");
-		
-		logger.debug("registerform() 종료됨");
 		return "form";
 	}
 	
@@ -159,9 +149,6 @@ public class HomeController {
 	
 	@PostMapping("/register")
 	public String register(UserRegisterForm userRegisterForm) {
-		logger.debug("register() 실행됨");
-		logger.info("회원가입정보: " + userRegisterForm);
-		
 		// User객체를 생성하고, UserRegisterForm의 값을 User객체로 복사한다.
 		User user = new User();
 		BeanUtils.copyProperties(userRegisterForm, user);
@@ -169,9 +156,6 @@ public class HomeController {
 		// UserService의 registerUser(user)를 호출해서 업무로직을 수행한다. 
 		userService.registerUser(user);
 				
-		logger.info("회원정보 등록 요청을 처리함");
-		logger.debug("register() 종료됨");
-		
 		return "redirect:home";
 	}
 	
@@ -182,12 +166,8 @@ public class HomeController {
 	
 	@PostMapping("/login")
 	public String login(@RequestParam("id") String userId, @RequestParam("password") String userPassword) {
-		logger.debug("login() 실행됨");
-		logger.info("로그인하는 사용자의 아이디: " + userId);
-		logger.info("로그인하는 사용자의 비밀번호: " + userPassword);
 		
 		userService.login(userId, userPassword);
-		logger.debug("login() 종료됨");
 		
 		// 로그인 전 페이지로 되돌아가기
 		String returnPath = (String) SessionUtils.getAttribute("returnPath");

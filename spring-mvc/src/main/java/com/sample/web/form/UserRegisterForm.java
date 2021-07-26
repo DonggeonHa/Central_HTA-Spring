@@ -9,10 +9,10 @@ import lombok.ToString;
 @ToString
 public class UserRegisterForm {
 
-    private String id;
-    private String password;
-    private String passwordConfirm;
-    private String name;
-    private String email;
-    private String phone;
+	private String id;
+	private String password;
+	private String passwordConfirm;
+	private String name;
+	private String email;
+	private String phone;
 }

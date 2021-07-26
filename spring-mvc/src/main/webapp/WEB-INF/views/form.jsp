@@ -9,7 +9,7 @@
 <title>샘플 애플리케이션</title>
 </head>
 <body>
-<c:set var="menu" value="register"></c:set>
+<c:set var="menu" value="register"/>
 <%@ include file="common/nav.jsp" %>
 <div class="container my-3">
 	<main>
@@ -20,11 +20,11 @@
 						<div class="border p-2 bg-dark text-white fw-bold">회원가입</div>
 					</div>
 				</div>
-				<c:if test="${not empty error}">
+				<c:if test="${not empty error }">
 					<div class="row">
 						<div class="col">
-							<div class="alert alert-danger" role="alert">
-								<strong>${error.title}</strong> ${error.message}
+							<div class="alert alert-danger">
+								<strong>${error.title }</strong> ${error.message }
 							</div>
 						</div>
 					</div>
@@ -99,59 +99,53 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-	$(function() {
-		$("#form-register").submit(function () {
-			var id = $.trim($("#user-id").val());
-			if (!id) {
-				alert("아이디는 필수입력값 입니다.")
-				$("#user-id").focus();
-				return false;
-			}
-			var password = $.trim($("#user-password").val());
-			if (!password) {
-				alert("비밀번호는 필수 입력값입니다.");
-				$("#user-password").focus();
-				return false;
-			}
-
-			var passwordConfirm = $.trim($("#user-password-confirm").val());
-			if (!passwordConfirm) {
-				alert("비밀번호확인은 필수 입력값입니다.");
-				$("#user-password-confirm").focus();
-				return false;
-			}
-
-			if (password != passwordConfirm) {
-				alert("비밀번호가 일치하지 않습니다");
-				$("#user-password-confirm").val("").focus();
-				return false;
-			}
-
-			var name = $.trim($("#user-name").val());
-			if (!name) {
-				alert("이름은 필수입력값입니다");
-				$("#user-name").focus();
-				return false;
-			}
-
-			var email = $.trim($("#user-email").val());
-			if (!email) {
-				alert("이메일은 필수입력값입니다");
-				$("#user-email").focus();
-				return false;
-			}
-
-			var phone = $.trim($("#user-phone").val());
-			if (!phone) {
-				alert("전화번호는 필수입력값입니다");
-				$("#user-phone").focus();
-				return false;
-			}
-
-			return true; // 폼 입력값이 서버로 제출되게 함
-
-		});
-	})
+$(function() {
+	$("#form-register").submit(function() {
+		var id = $.trim($("#user-id").val());
+		if (!id) {
+			alert("아이디는 필수입력값입니다.");
+			$("#user-id").focus();
+			return false;
+		}
+		var password = $.trim($("#user-password").val());
+		if (!password) {
+			alert("비밀번호는 필수입력값입니다.");
+			$("#user-password").focus();
+			return false;
+		}
+		var passwordConfirm = $.trim($("#user-password-confirm").val());
+		if (!passwordConfirm) {
+			alert("비밀번호 확인은 필수입력값입니다.");
+			$("#user-password-confirm").focus();
+			return false;
+		}
+		if (password != passwordConfirm) {
+			alert("비밀번호가 일치하지 않습니다.");
+			$("#user-password-confirm").val("").focus();
+			return false;
+		}
+		var name = $.trim($("#user-name").val());
+		if (!name) {
+			alert("이름은 필수입력값입니다.");
+			$("#user-name").focus();
+			return false;
+		}
+		var email = $.trim($("#user-email").val());
+		if (!email) {
+			alert("이메일은 필수입력값입니다.");
+			$("#user-email").focus();
+			return false;
+		}
+		var phone = $.trim($("#user-phone").val());
+		if (!email) {
+			alert("전화번호는 필수입력값입니다.");
+			$("#user-phone").focus();
+			return false;
+		}
+		
+		return true;	// 폼입력값이 서버로 제출되게 함
+	});
+})
 </script>
 </body>
 </html>
