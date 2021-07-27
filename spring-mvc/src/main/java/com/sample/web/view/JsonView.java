@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractView;
 
@@ -23,7 +24,13 @@ import org.springframework.web.servlet.view.AbstractView;
 @Component
 public class JsonView extends AbstractView {
 
-	Gson gson = new Gson();
+	Gson gson;
+
+	public JsonView() {
+		GsonBuilder builder = new GsonBuilder();
+		builder.setDateFormat("yyyy-MM-dd");
+		gson = builder.create();
+	}
 
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,

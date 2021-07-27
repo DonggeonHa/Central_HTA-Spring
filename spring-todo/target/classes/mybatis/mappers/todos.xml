@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sample.dao.TodoDao">
+
+	<resultMap id="Todo" type="com.sample.vo.Todo">
+		<id column="todo_no" property="no"/>
+		<result column="todo_category" property="category"/>
+		<result column="todo_title" property="title"/>
+		<result column="todo_writer" property="writer"/>
+		<result column="todo_due_date" property="dueDate"/>
+		<result column="todo_content" property="content"/>
+		<result column="todo_status" property="status"/>
+		<result column="todo_completed_date" property="completedDate"/>
+		<result column="todo_updated_date" property="updatedDate"/>
+		<result column="todo_deleted_date" property="deletedDate"/>
+		<result column="todo_created_date" property="createdDate"/>
+	</resultMap>
+	
+	<insert id="insertTodo" parameterType="com.sample.vo.Todo">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			select todo_seq.nextval from dual
+		</selectKey>
+		insert into sample_rest_todos
+		(todo_no, todo_category, todo_title, todo_writer, todo_due_date, todo_content)
+		values
+		(#{no}, #{category}, #{title}, #{writer}, #{dueDate}, #{content})
+	</insert>
+	
+	<update id="updateTodo" parameterType="com.sample.vo.Todo">
+		update 
+			sample_rest_todos
+		set	
+			todo_category = #{category},
+			todo_title = #{title},
+			todo_writer = #{writer},
+			todo_due_date = #{dueDate},
+			todo_status = #{status},
+			todo_content = #{content},
+			todo_completed_date = #{completedDate},
+			todo_updated_date = #{updatedDate},
+			todo_deleted_date = #{deletedDate}
+		where
+			todo_no = #{no}
+	</update>
+	
+	<select id="getTodoByNo" parameterType="int" resultMap="Todo">
+		select
+			*
+		from 
+			sample_rest_todos
+		where
+			todo_no = #{value}
+	</select>
+	
+	<select id="getAllTodos" resultMap="Todo">
+		select
+			*
+		from
+			sample_rest_todos
+		where
+			todo_status != '삭제'
+		order by
+			todo_no desc
+	</select>
+	
+</mapper>

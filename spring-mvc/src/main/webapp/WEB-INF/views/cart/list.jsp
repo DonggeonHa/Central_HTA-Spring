@@ -172,7 +172,7 @@ $(function() {
 	var productDetailModal = new bootstrap.Modal(document.getElementById('modal-product-detail'), {
 		keyboard: false
 	});
-	
+
 	$("#table-cart .btn-link").click(function(event) {
 		event.preventDefault();
 
@@ -186,7 +186,18 @@ $(function() {
 			dataType:"json"		// 응답데이터타입
 		})
 		.done(function(product) {					// 성공적인 응답이 왔을 때 실행된다.
-			console.log(product)
+			// product -> {no: 11, name: "갤럭시노트9", maker: "삼성", category: "스마트폰/태블릿", price: 1000000, …}
+			$('#modal-product-created-date').text(product.createdDate);
+			$('#modal-product-category').text(product.category);
+			$('#modal-product-review-cnt').text(product.reviewCnt);
+			$('#modal-product-name').text(product.name);
+			$('#modal-product-maker').text(product.maker);
+			$('#modal-product-price').text(new Number(product.price).toLocaleString());
+			$('#modal-product-discount-price').text(new Number(product.discountPrice).toLocaleString());
+			$('#modal-product-stock').text(product.stock);
+			$('#modal-product-sold-out').text(product.soldOut);
+			
+			productDetailModal.show();
 		})
 		.fail(function () {					// 요청이 실패했을때 실행된다
 
