@@ -16,7 +16,7 @@
 		<div class="container-fluid py-3">
 			<h1 class="display-5 fw-bold">샘플 애플리케이션</h1>
 			<p class="col-10 fs-4">일정관리 샘플 프로그램입니다.</p>
-			<a class="btn btn-primary btn-lg" href="/spring-todo/todo/list">일정보기</a>
+			<a class="btn btn-primary btn-lg" href="/spring-todo-ajax/todo/list">일정보기</a>
 		</div>
 	</div>
 </div>

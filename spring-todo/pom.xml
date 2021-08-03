@@ -41,28 +41,7 @@
 		<!-- 오라클 JDBC 드라이브 라이브러리 의존성 추가 -->
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
-			<artifactId>ojdbc10</artifactId>
-			<version>19.11.0.0</version>
-		</dependency>
-
-		<!-- 오라클 클라우드 디비 접속시 필요한거 1 -->
-		<dependency>
-			<groupId>com.oracle.database.security</groupId>
-			<artifactId>oraclepki</artifactId>
-			<version>21.1.0.0</version>
-		</dependency>
-
-		<!-- 오라클 클라우드 디비 접속시 필요한거 2 -->
-		<dependency>
-			<groupId>com.oracle.database.security</groupId>
-			<artifactId>osdt_core</artifactId>
-			<version>21.1.0.0</version>
-		</dependency>
-
-		<!-- 오라클 클라우드 디비 접속시 필요한거 3 -->
-		<dependency>
-			<groupId>com.oracle.database.security</groupId>
-			<artifactId>osdt_cert</artifactId>
+			<artifactId>ojdbc8</artifactId>
 			<version>21.1.0.0</version>
 		</dependency>
 		<!-- 인코딩/디코딩 관련 라이브러리 의존성 추가 -->

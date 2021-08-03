@@ -11,7 +11,10 @@
 					<a class="nav-link ${menu eq 'home' ? 'active fw-bold' : '' }"  href="/spring-todo/home">홈</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link ${menu eq 'todo' ? 'active fw-bold' : '' }" href="/spring-todo/todo/list">일정보기</a>
+					<a class="nav-link ${menu eq 'ajax' ? 'active fw-bold' : '' }" href="/spring-todo/ajax">일정보기 with Ajax</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link ${menu eq 'rest' ? 'active fw-bold' : '' }" href="/spring-todo/rest">일정보기 with Rest</a>
 				</li>
 			</ul>
 		</div>

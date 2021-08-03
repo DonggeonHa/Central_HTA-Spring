@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sample.dao.AttachmentFileDao">
+
+	<insert id="insertAttachmentFile" parameterType="com.sample.vo.AttachmentFile">
+		<selectKey keyProperty="no" resultType="long" order="BEFORE">
+			select file_seq.nextval from dual
+		</selectKey>
+		insert into sample_attachment_files
+		(file_no, file_title, file_writer, file_description)
+		values
+		(#{no}, #{title}, #{writer}, #{description})
+	</insert>
+	
+	<select id="getAllAttachmentFiles" resultType="com.sample.vo.AttachmentFile">
+		select 
+			file_no no,
+			file_title title,
+			file_writer writer,
+			file_description description,
+			file_amount amount,
+			file_created_date createdDate
+		from
+			sample_attachment_files
+		order by
+			file_no desc
+	</select>
+	
+	<select id="getAttachmentFile" parameterType="long" resultType="com.sample.vo.AttachmentFile">
+		select 
+			file_no no,
+			file_title title,
+			file_writer writer,
+			file_description description,
+			file_amount amount,
+			file_created_date createdDate
+		from
+			sample_attachment_files
+		where
+			file_no = #{value}
+	</select>
+	
+	<update id="updateAttachmentFile" parameterType="com.sample.vo.AttachmentFile">
+		update
+			sample_attachment_files
+		set
+			file_title = #{title},
+			file_writer = #{writer},
+			file_description = #{description},
+			file_amount = #{amount}
+		where
+			file_no = #{no}
+	</update>
+	
+	<delete id="deleteAttachmentFile" parameterType="long">
+		delete from
+			sample_attachment_files
+		where
+			file_no = #{value}
+	</delete>
+
+</mapper>

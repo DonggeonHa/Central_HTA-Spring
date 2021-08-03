@@ -17,11 +17,11 @@
 	</resultMap>
 	
 	<insert id="insertTodo" parameterType="com.sample.vo.Todo">
-		<!--
-			INSERT문 실행전에 <selectKey> 태그내의 수행문이 먼저 실행된다.
-			수행문의 실행결과로 획득된 시퀀스으 값이 파라미터로 전달받은 Todo객체의 no변수에 저장된다.
-			따라서, INSERT문에서는 todo_seq.nextval 대신 #{no}가 사용된다.
-		-->
+		<!-- 
+			insert문 실행전에 <selectKey> 태그내의 수행문이 먼저 실행된다.
+			수행문의 실행결과로 획득된 시퀀스값이 파라미터로 전달받은 Todo객체의 no변수에 저장된다.
+			따라서, insert문에서는 todo_seq.nextval 대신 #{no}가 사용된다.
+		 -->
 		<selectKey keyProperty="no" resultType="int" order="BEFORE">
 			select todo_seq.nextval from dual
 		</selectKey>

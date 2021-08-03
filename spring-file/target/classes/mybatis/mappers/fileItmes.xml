@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.sample.dao.FileItemDao">
+	
+	<insert id="insertFileItem" parameterType="com.sample.vo.FileItem">
+		insert into sample_file_items
+		(file_item_no, file_item_filename, file_item_filetype, file_item_filesize, file_no)
+		values
+		(file_item_seq.nextval, #{filename}, #{filetype}, #{filesize}, #{fileNo})
+	</insert>
+	
+	<select id="getFileItemsByFileNo" parameterType="long" resultType="com.sample.vo.FileItem">
+		select
+			file_item_no no,
+			file_item_filename filename,
+			file_item_filetype filetype,
+			file_item_filesize filesize,
+			file_no fileNo
+		from
+			sample_file_items
+		where
+			file_no = #{value}
+		order by
+			file_item_no desc
+	</select>
+	
+	<select id="getFileItemByNo" parameterType="long" resultType="com.sample.vo.FileItem">
+		select
+			file_item_no no,
+			file_item_filename filename,
+			file_item_filetype filetype,
+			file_item_filesize filesize,
+			file_no fileNo
+		from
+			sample_file_items
+		where
+			file_item_no = #{value}
+	</select>
+	
+	<delete id="deleteFileItem" parameterType="long">
+		delete from
+			sample_file_items
+		where
+			file_item_no = #{value}
+	</delete>
+	
+	<delete id="deleteFileItemsByFileNo" parameterType="long">
+		delete from
+			sample_file_items
+		where
+			file_no = #{value}
+	</delete>
+</mapper>

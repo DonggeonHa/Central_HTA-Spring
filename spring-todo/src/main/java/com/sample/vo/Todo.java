@@ -33,11 +33,12 @@ public class Todo {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date createdDate;
 }
+
 /*
- *   @DateTimeFormat(pattern = "yyyy-MM-dd")
- *      - 입력필드에서 입력한 문자열 형식의 날짜를 Date타입 객체와 매핑시키는 어노테이션이다.
- *      - pattern 속성에서는 날짜 형식을 지정한다.
- *
- *  @JsonFormat(pattern = "yyyy-MM-dd")
- *      - @JsonFormat이 지정된 Date 타입의 값이 json 형식이 변환될 때 지정된 패턴 형식의 텍스트로 변한다.
- */
+ * @DateTimeFormat(pattern = "yyyy-MM-dd")
+ * 		- 입력필드에서 입력한 문자열 형식의 날짜를 Date타입 객체와 매핑시키는 어노테이션이다.
+ * 		- pattern속성에서는 날짜형식을 지정한다.
+ * 
+ * @JsonFormat(pattern = "yyyy-MM-dd")
+ * 		- @JsonFormat이 지정된 Date타입의 값이 json형식의 변환될 때 지정된 패턴형식의 텍스트로 변한다.
+*/

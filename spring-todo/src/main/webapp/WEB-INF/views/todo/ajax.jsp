@@ -9,7 +9,7 @@
 <title>샘플 애플리케이션</title>
 </head>
 <body>
-<c:set var="menu" value="todo"/>
+<c:set var="menu" value="ajax"/>
 <%@ include file="../common/nav.jsp" %>
 <div class="container my-3">
 	<main>
@@ -31,7 +31,7 @@
 							<col width="*">
 							<col width="10%">
 							<col width="10%">
-							<col width="15%">
+							<col width="10%">
 						</colgroup>
 						<thead>
 							<tr>
@@ -52,26 +52,25 @@
 								</c:when>
 								<c:otherwise>
 									<c:forEach var="todo" items="${todos }">
-										<tr>
+										<tr id="todo-${todo.no }">
 											<td>${todo.no }</td>
 											<td>${todo.category }</td>
 											<td><button class="btn btn-link btn-sm" data-todo-no="${todo.no }">${todo.title }</button></td>
-											<td><fmt:formatDate value="${todo.dueDate }" /></td>
+											<td><fmt:formatDate value="${todo.dueDate }" pattern="yyyy-MM-dd"/></td>
 											<td>
 												<c:choose>
 													<c:when test="${todo.status eq '등록' }">
-														<span class="badge bg-info">${todo.status }</span>
-													</c:when>
-													<c:when test="${todo.status eq '완료' }">
 														<span class="badge bg-primary">${todo.status }</span>
 													</c:when>
-																										
+													<c:when test="${todo.status eq '완료' }">
+														<span class="badge bg-success">${todo.status }</span>
+													</c:when>
+													<c:when test="${todo.status eq '보류' }">
+														<span class="badge bg-secondary">${todo.status }</span>
+													</c:when>
 												</c:choose>
 											</td>
-											<td>
-												<button class="btn btn-outline-danger btn-sm" data-todo-no="${todo.no }">삭제하기</button>
-												<button class="btn btn-outline-primary btn-sm" data-todo-no="${todo.no }">완료하기</button>
-											</td>
+											<td><button class="btn btn-outline-danger btn-sm rm-2" data-todo-no="${todo.no }">삭제하기</button></td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>
@@ -84,43 +83,69 @@
 	</main>
 	<div class="modal fade" id="form-todo-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
-			<form id="form-todo">
-				<input type="hidden" name="no" id="todo-no">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">새 일정쓰기</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<div class="row px-2 mb-2">
-							<select class="form-control" id="todo-category" name="category">
-								<option value="" selected="selected" disabled="disabled"> 카테고리를 선택하세요</option>
-								<option value="회의"> 회의</option>
-								<option value="미팅"> 미팅</option>
-								<option value="외근"> 외근</option>
-								<option value="출장"> 출장</option>
-								<option value="휴가"> 휴가</option>
-							</select>
-						</div>
-						<div class="row px-2 mb-2">
-							<input type="text" class="form-control" id="todo-title" name="title" placeholder="제목을 입력하세요">
-						</div>
-						<div class="row px-2 mb-2">
-							<input type="text" class="form-control" id="todo-writer" name="writer" placeholder="작성자를 입력하세요">
-						</div>
-						<div class="row px-2 mb-2">
-							<input type="date" class="form-control" id="todo-due-date" name="dueDate">
-						</div>
-						<div class="row px-2">
-							<textarea rows="5" class="form-control" id="todo-content" name="content" placeholder="내용을 입력하세요"></textarea>
-						</div>
+						<form id="form-todo">
+							<input type="hidden" name="no" id="todo-no">
+							<div class="row px-2 mb-2">
+								<div class="form-check">
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="category" value="회의" checked="checked">
+										<label class="form-check-label">회의</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="category" value="외근">
+										<label class="form-check-label">외근</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="category" value="출장">
+										<label class="form-check-label">출장</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="category" value="휴가">
+										<label class="form-check-label">휴가</label>
+									</div>
+								</div>
+							</div>
+							<div class="row px-2 mb-2">
+								<input type="text" class="form-control" id="todo-title" name="title" placeholder="제목을 입력하세요">
+							</div>
+							<div class="row px-2 mb-2">
+								<input type="text" class="form-control" id="todo-writer" name="writer" placeholder="작성자를 입력하세요">
+							</div>
+							<div class="row px-2 mb-2">
+								<input type="date" class="form-control" id="todo-due-date" name="dueDate">
+							</div>
+							<div class="row px-2">
+								<textarea rows="5" class="form-control" id="todo-content" name="content" placeholder="내용을 입력하세요"></textarea>
+							</div>
+							<div class="row px-2 mb-2">
+								<div class="form-check">
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="status" value="등록" checked="checked">
+										<label class="form-check-label">등록</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="status" value="완료" disabled="disabled">
+										<label class="form-check-label">완료</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="status" value="보류" disabled="disabled">
+										<label class="form-check-label">보류</label>
+									</div>
+								</div>
+							</div>
+						</form>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 						<button type="button" class="btn btn-primary" id="btn-post-todo">등록</button>
 					</div>
 				</div>
-			</form>
 		</div>
 	</div>
 </div>
@@ -128,38 +153,49 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 $(function() {
+	var request = "등록"
+	var requestURI = "todos/add";
+	
 	var todoModal = new bootstrap.Modal(document.getElementById("form-todo-modal"), {
 		keyboard: false
 	})
 	
+	// 새 일정 등록 버튼을 클릭했을 때 실행된다.
 	$("#btn-open-todo-modal").click(function() {
-		$("#todo-no").val("");
+		requestURI = "todos/add";
+		request = "등록"
+		
+		$("#todo-no").val("").prop("disabled", true);
+		$(":radio[name=category]").eq(0).prop("checked", true);
+		$("#todo-title").val("");
+		$("#todo-writer").val("");
+		$("#todo-due-date").val("");
+		$("#todo-content").val("");
+		$(":radio[name=status]").eq(0).prop("checked", true).end().filter(":gt(0)").prop("disabled", true)
+		$("#btn-post-todo").text("등록");
+		
 		todoModal.show();
 	});
 	
+	// 모달창에서 등록/수정 버튼을 클릭했을 때 실행된다.
 	$("#btn-post-todo").click(function() {
-		$("#todo-no").prop("disabled", true);
 		
 		$.ajax({
 			type: "POST",
-			url: "add",
-			data: $("#form-todo").serialize(),
+			url: requestURI,
+			data: $("#form-todo").serialize(),																						// category=외근&title=노동부방문&writer=홍길동 쿼리스트링형태로 서버로 전달된다.
 			dataType: 'json',
 			success: function(todo) {
-				var $tr = $("<tr></tr>");
-				$tr.append("<td>"+todo.no+"</td>")
-				$tr.append("<td>"+todo.category+"</td>")
-				$tr.append("<td><button class='btn btn-link' data-todo-no='"+todo.title+"'>"+todo.title+"</td>")
-				$tr.append("<td>"+todo.dueDate+"</td>")
-				$tr.append("<td><span class='badge bg-info'>"+todo.status+"</span></td>")
-				
-				var $completeButton = $("<button></button>").addClass("btn btn-outline-primary btn-sm").text("완료하기").attr("data-todo-no", todo.no);
-				var $deleteButton = $("<button></button>").addClass("btn btn-outline-danger btn-sm").text("삭제하기").attr("data-todo-no", todo.no);
-				var $buttonTd = $("<td></td>")
-				$buttonTd.append($deleteButton).append($completeButton);
-				$tr.append($buttonTd);
-				
-				$("#table-todos tbody").prepend($tr);
+				if (request == "등록") {
+					$("#table-todos tbody").prepend(makeRow(todo));
+				} else if (request == "수정") {
+					var $tds = $("#todo-" + todo.no).find("td");
+					$tds.eq(1).text(todo.category);
+					$tds.eq(2).find("button").text(todo.title);
+					$tds.eq(3).text(todo.dueDate);
+					$tds.eq(4).find("span").text(todo.status)
+						.removeClass(["bg-primary", "bg-success", "bg-secondary"]).addClass(bgColor(todo.status));
+				}
 			},
 			complete: function() {
 				todoModal.hide();
@@ -167,11 +203,12 @@ $(function() {
 		});
 	})
 	
+	// 삭제버튼을 클릭했을 때
 	$("#table-todos tbody").on('click', '.btn-outline-danger', function() {
 		var $tr = $(this).closest("tr");
 		$.ajax({
 			type: "GET",
-			url: "delete",
+			url: "todos/delete",
 			data: {no: $(this).data("todo-no")},
 			success: function() {
 				$tr.remove();
@@ -179,17 +216,51 @@ $(function() {
 		});
 	});
 	
-	$("#table-todos tbody").on('click', '.btn-outline-primary', function() {
-		var $tr = $(this).closest("tr");
-		$.ajax({
-			type: "GET",
-			url: "complete",
-			data: {no: $(this).data("todo-no")},
-			success: function() {
-				$tr.find("span").attr("class", "").addClass("badge bg-primary").text('완료')
-			}
-		})
-	})
+	// 일정제목을 클릭했을 때
+	$("#table-todos tbody").on('click', '.btn-link', function(event) {
+		request = "수정";
+		requestURI = "todos/modify";
+		$("#btn-post-todo").text("수정");
+		$(":input:disabled").prop("disabled", false);
+		
+		event.preventDefault();
+		$.getJSON("todos/detail?no=" + $(this).data("todo-no"))
+			.done(function(todo) {
+				$("#todo-no").val(todo.no);
+				$(":radio[name=category][value="+todo.category+"]").prop("checked", true);
+				$("#todo-title").val(todo.title);
+				$("#todo-writer").val(todo.writer);
+				$("#todo-due-date").val(todo.dueDate);
+				$("#todo-content").val(todo.content);
+				$(":radio[name=status][value="+todo.status+"]").prop("checked", true);
+				
+				todoModal.show();
+			})
+	});
+	
+	function makeRow(todo) {
+		var row = "<tr  class='align-middle' id='todo-"+todo.no+"'>"
+		row += "<td>"+todo.no+"</td>";
+		row += "<td>"+todo.category+"</td>";
+		row += "<td><button class='btn btn-link' data-todo-no='"+todo.no+"'>"+todo.title+"</td>";
+		row += "<td>"+todo.dueDate+"</td>";
+		row += "<td><span class='badge p-2 px-3 "+bgColor(todo.status)+"'>"+todo.status+"</span></td>";
+		row += "<td><button class='btn btn-outline-danger btn-sm' data-todo-no='"+todo.no+"'>삭제하기</button></td>";
+		row += "</tr>";
+		return row;
+	}	
+	
+	function bgColor(status) {
+		if (status == '등록') {
+			return "bg-primary";
+		}
+		if (status == '완료') {
+			return "bg-success";
+		}
+		if (status == '보류') {
+			return "bg-secondary";
+		}
+	}
 	
 })
 </script>
